@@ -36,19 +36,16 @@ _load_env()
 # ── Telegram ──
 # Token .env dan keladi. Bo'sh bo'lsa bot ishga tushmaydi (bot.py tekshiradi).
 BOT_TOKEN    = os.environ.get("BOT_TOKEN", "")
-# TODO(UJ): @BotFather dan olingan yangi bot username'i.
-BOT_USERNAME = "ujvision_bot"
-# TODO(UJ): do'kon egasining Telegram ID'si (@userinfobot dan olinadi).
+BOT_USERNAME = "ujvision_robot"
 ADMIN_IDS    = {7203124812}   # Egalar — panel orqali o'chirib bo'lmaydi
-# TODO(UJ): Vercel'dagi yangi domen.
 # BotFather /setdomain da ham aynan shu domen ko'rsatilgan bo'lishi kerak.
 MINI_APP_URL = "https://uj-vision.vercel.app"
 
 # ── Kompaniya aloqa ma'lumotlari (bot javoblarida ko'rinadi) ──
-# Frontend tomonidagi nusxasi: src/config/brand.ts
 COMPANY_NAME     = "UJ VISION"
 COMPANY_TAGLINE  = "Kiyimlar do'koni"
-# TODO(UJ): haqiqiy aloqa ma'lumotlari.
+# TODO(UJ): hozircha namunaviy — do'kon haqiqiy ma'lumotlarini berganda almashtiriladi.
+# Frontend tomonidagi nusxasi: src/config/brand.ts
 SUPPORT_PHONE    = "+998 97 400 98 77"
 SUPPORT_EMAIL    = "info@ujvision.uz"
 SUPPORT_TELEGRAM = "@ujvision"
@@ -74,6 +71,6 @@ DB_FILE      = "database.json"
 # To'lov sozlamalari — faqat BOSHLANG'ICH qiymat.
 # Bot birinchi ishga tushganda bular Firestore'dagi settings/payment
 # hujjatiga ko'chiriladi. Undan keyin haqiqiy manba — o'sha hujjat (F-07).
-# TODO(UJ): do'konning haqiqiy karta raqami va egasi.
+# TODO(UJ): hozircha eski karta — do'kon o'z kartasini berganda almashtiriladi.
 CARD_NUMBER = "5614 6818 1872 7921"
 CARD_OWNER  = "Abubakir Abdulbositov"

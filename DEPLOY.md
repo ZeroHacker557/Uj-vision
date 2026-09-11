@@ -15,24 +15,24 @@
 Loyiha UJ VISION brendiga o'tkazildi: ranglar, matnlar, logotip, favicon,
 kategoriyalar, ikonkalar va bot javoblari.
 
-Kodda qolgan `TODO(UJ)` belgilari — hali sizdan kutilayotgan qiymatlar.
-Ularni topish uchun: `grep -rn "TODO(UJ)" src bot`.
+Kodda qolgan `TODO(UJ)` belgilari — ataylab keyinga qoldirilgan qiymatlar
+(aloqa ma'lumotlari va to'lov kartasi). Ularni topish uchun:
+`grep -rn "TODO(UJ)" src bot`.
 
 | Nima | Qayerga | Holat |
 |---|---|---|
-| **Yangi bot tokeni** | `bot/.env` (git'ga tushmaydi) | ❌ **siz berasiz** |
-| **Yangi bot tokeni** | Vercel env `BOT_TOKEN` | ❌ **siz qo'shasiz** |
-| Bot username | `bot/config.py` → `BOT_USERNAME`, `src/config/brand.ts` | ❌ `ujvision_bot` (namuna) |
-| Firebase web config | `src/config/firebase.ts` | ❌ hali eski loyihaniki |
-| Firebase service account JSON | `bot/config.py` → `FIREBASE_KEY_FILE` + loyiha ildizi | ❌ hali eski loyihaniki |
-| Firebase service account JSON | Vercel env `FIREBASE_SERVICE_ACCOUNT` | ❌ **siz qo'shasiz** |
-| Storage bucket | `bot/config.py` → `FIREBASE_STORAGE_BUCKET` | ❌ hali eski loyihaniki |
-| Mini app domeni | `bot/config.py` → `MINI_APP_URL` | ❌ `uj-vision.vercel.app` (namuna) |
-| BotFather `/setdomain` → yangi domen | Telegram | ❌ **siz qilasiz** |
-| Firestore Rules (4-bo'lim) | Firebase Console | ❌ **siz qilasiz** |
-| Admin Telegram ID | `bot/config.py` → `ADMIN_IDS` | ❌ tekshiring |
-| Aloqa raqami / email / Telegram | `src/config/brand.ts` va `bot/config.py` | ❌ namuna qiymatlar |
-| To'lov kartasi | `bot/config.py` → `CARD_NUMBER`, `CARD_OWNER` | ❌ eskisi qoldirildi |
+| Bot tokeni | `bot/.env` (git'ga tushmaydi) | ✅ yozildi |
+| **Bot tokeni** | Vercel env `BOT_TOKEN` | ❌ **siz qo'shasiz** |
+| **Service account JSON** | Vercel env `FIREBASE_SERVICE_ACCOUNT` | ❌ **siz qo'shasiz** |
+| **BotFather `/setdomain`** → `uj-vision.vercel.app` | Telegram | ❌ **siz qilasiz** |
+| **Firestore Rules** (4-bo'lim) | Firebase Console | ❌ **siz qilasiz** |
+| Bot username `@ujvision_robot` | `bot/config.py`, `src/config/brand.ts` | ✅ yozildi |
+| Firebase web config | `src/config/firebase.ts` (`uj-vision-kiyimdokon`) | ✅ yozildi |
+| Service account fayli va bucket | `bot/config.py`, loyiha ildizida JSON | ✅ yozildi |
+| Mini app domeni | `bot/config.py` → `MINI_APP_URL` | ✅ yozildi |
+| Admin Telegram ID `7203124812` | `bot/config.py` → `ADMIN_IDS` | ✅ eskisi qoldirildi |
+| Aloqa raqami / email / Telegram | `src/config/brand.ts` va `bot/config.py` | ⬜ namunaviy, keyin almashtiriladi |
+| To'lov kartasi | `bot/config.py` → `CARD_NUMBER`, `CARD_OWNER` | ⬜ eskisi qoldirildi |
 | Logotip va favicon | `src/images/uj-mark.webp`, `public/favicon-*.png` | ✅ yaratildi |
 | Brend ranglari va matnlar | `src/styles.css`, `src/i18n/*` | ✅ UJ VISION ga moslandi |
 | Kategoriyalar va ikonkalar | `src/config/categories.ts`, `bot/firebase_db.py` | ✅ kiyimga moslandi |

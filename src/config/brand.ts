@@ -13,11 +13,11 @@ export const BRAND = {
   taglineRu: 'Магазин одежды',
 
   /** Telegram bot — mini app shu bot ichida ochiladi. */
-  // TODO(UJ): @BotFather dan olingan yangi bot username'ini yozing.
-  botUsername: 'ujvision_bot',
+  botUsername: 'ujvision_robot',
 
   /** Mijozlar xizmati. */
-  // TODO(UJ): haqiqiy raqam va manzillarni yozing.
+  // TODO(UJ): hozircha namunaviy qiymatlar — do'kon haqiqiylarini
+  // berganda shu yerni va bot/config.py dagi nusxasini almashtiring.
   phone: '+998 97 400 98 77',
   phoneHref: 'tel:+998974009877',
   email: 'info@ujvision.uz',

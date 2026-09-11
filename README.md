@@ -24,10 +24,10 @@ Ranglar `src/styles.css` dagi CSS o'zgaruvchilarida. Komponentlarda hex
 yozilmaydi — faqat `var(--brand)` kabi tokenlar, shu tufayli qorong'i rejim
 bitta blokda hal bo'ladi.
 
-> ⚠️ Firebase loyihasi, bot tokeni va domen hali ESKI loyihaniki
-> (`musa-onlineshop`). To'ldirilishi kerak bo'lgan qiymatlar ro'yxati —
-> [`DEPLOY.md`](./DEPLOY.md) → "0. UJ VISION ga o'tish". Maxfiy qiymatlar
-> (bot tokeni, service account JSON) git'ga tushmaydi.
+> Firebase loyihasi — `uj-vision-kiyimdokon`, bot —
+> [@ujvision_robot](https://t.me/ujvision_robot), mini app —
+> `https://uj-vision.vercel.app`. Maxfiy qiymatlar (bot tokeni, service
+> account JSON) git'ga tushmaydi — [`DEPLOY.md`](./DEPLOY.md) ga qarang.
 
 ## Tuzilma
 
