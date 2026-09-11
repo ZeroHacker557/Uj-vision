@@ -2,9 +2,9 @@
  * O'zbekcha lug'at — asosiy (source of truth).
  * Boshqa tillar shu kalitlar to'plamiga amal qiladi.
  *
- * Matnlar MUSA — muzlatilgan mahsulotlar do'koni uchun yozilgan:
- * yarim tayyor mahsulotlar, muzqaymoq va siroklar. "O'lcham"
- * o'rniga vazn (gramm/kg), "rang" o'rniga mahsulot turi ishlatiladi.
+ * Matnlar UJ VISION — kiyimlar do'koni uchun yozilgan: uch yo'nalish
+ * kiyimlar: tepa, pastgi va oyoq kiyimlari. Mahsulot variantlari
+ * "o'lcham" (S, M, L, 42, 44...) va "rang" bo'yicha tanlanadi.
  */
 export const uz = {
   // ── Umumiy ──
@@ -24,8 +24,8 @@ export const uz = {
   'common.required': 'majburiy',
 
   // ── Brend ──
-  'brand.tagline': 'Muzlatilgan mahsulotlar',
-  'brand.slogan': "Uydagidek ta'm — tez va oson",
+  'brand.tagline': 'Kiyimlar do‘koni',
+  'brand.slogan': "Sizning uslubingiz — bizning tanlovimiz",
 
   // ── Navigatsiya ──
   'nav.home': 'Bosh sahifa',
@@ -35,15 +35,15 @@ export const uz = {
   'nav.profile': 'Profil',
 
   // ── Bosh sahifa ──
-  'home.searchPlaceholder': 'Mahsulot yoki turkum qidiring...',
-  'home.heroBadge': 'Yangi va sifatli',
-  'home.heroTitle': "Uydagidek ta'm — bir necha daqiqada",
-  'home.heroSubtitle': 'Yarim tayyor mahsulotlar, muzqaymoq va siroklar.',
-  'home.heroCta': 'Buyurtma berish',
+  'home.searchPlaceholder': 'Kiyim yoki turkum qidiring...',
+  'home.heroBadge': 'Yangi mavsum',
+  'home.heroTitle': 'Uslubingizni UJ VISION bilan toping',
+  'home.heroSubtitle': 'Tepa va pastgi kiyimlar hamda oyoq kiyimlari.',
+  'home.heroCta': "Kolleksiyani ko'rish",
   'home.lines': "Yo'nalishlar",
-  'home.popular': 'Mashhur mahsulotlar',
+  'home.popular': 'Mashhur modellar',
   'home.seeAll': "Barchasini ko'rish",
-  'home.emptyTitle': 'Mahsulotlar tez orada!',
+  'home.emptyTitle': 'Kolleksiya tez orada!',
   'home.emptyText': "Admin mahsulot qo'shganda shu yerda ko'rinadi.",
 
   'benefit.delivery': 'Tez yetkazish',
@@ -52,16 +52,16 @@ export const uz = {
   'benefit.paymentSub': 'Naqd yoki karta',
   'benefit.support': '24/7 aloqa',
   'benefit.supportSub': 'Har doim siz bilan',
-  'benefit.natural': 'Tabiiy tarkib',
-  'benefit.naturalSub': "Sun'iy qo'shimchalarsiz",
+  'benefit.original': 'Original mahsulot',
+  'benefit.originalSub': 'Sifat kafolati',
 
   // ── Katalog ──
-  'catalog.title': 'Mahsulotlar katalogi',
+  'catalog.title': 'Kiyimlar katalogi',
   'catalog.filters': 'Filtrlar',
   'catalog.sortCheap': 'Arzon narx',
   'catalog.sortExpensive': 'Qimmat narx',
   'catalog.total': 'Jami {count} ta mahsulot',
-  'catalog.emptyCategory': 'Bu turkumda mahsulot topilmadi',
+  'catalog.emptyCategory': 'Bu turkumda model topilmadi',
   'catalog.emptyCategoryText': 'Boshqa turkumni tanlang.',
   'catalog.filterSummary': 'Turkum: {category} • Narx: {sort}',
   'catalog.sortAsc': 'arzondan qimmatga',
@@ -69,8 +69,8 @@ export const uz = {
   'catalog.priceRange': 'Narx oralig‘i',
   'catalog.priceFrom': 'dan',
   'catalog.priceTo': 'gacha',
-  'catalog.size': 'Vazn',
-  'catalog.color': 'Turi',
+  'catalog.size': "O'lcham",
+  'catalog.color': 'Rang',
   'catalog.inStockOnly': 'Faqat sotuvdagilar',
   'catalog.reset': 'Tozalash',
   'catalog.apply': "Qo'llash",
@@ -80,9 +80,9 @@ export const uz = {
 
   // ── Mahsulot ──
   'product.title': 'Mahsulot',
-  'product.fastDelivery': 'Muzlatilgan holda yetkaziladi',
-  'product.chooseColor': 'Turini tanlang',
-  'product.chooseSize': 'Vaznni tanlang',
+  'product.fastDelivery': 'Toshkent bo‘ylab tez yetkazish',
+  'product.chooseColor': 'Rangni tanlang',
+  'product.chooseSize': "O'lchamni tanlang",
   'product.about': 'Mahsulot haqida',
   'product.zoom': 'Rasmni kattalashtirish',
   'product.addToCart': "Savatchaga qo'shish",
@@ -113,12 +113,12 @@ export const uz = {
   'cart.title': 'Savatcha',
   'cart.kinds': '{count} xil mahsulot',
   'cart.empty': "Savatchangiz bo'sh",
-  'cart.emptyText': 'Yoqtirgan mahsulotlaringizni tanlang.',
+  'cart.emptyText': 'Yoqtirgan modellaringizni tanlang.',
   'cart.total': 'Jami',
   'cart.checkout': 'Buyurtma berish',
-  'cart.size': 'Vazn',
-  'cart.color': 'Turi',
-  'cart.goToCatalog': "Mahsulotlarni ko‘rish",
+  'cart.size': "O'lcham",
+  'cart.color': 'Rang',
+  'cart.goToCatalog': 'Katalogni ko‘rish',
 
   // ── Qidiruv ──
   'search.placeholder': 'Qidirish...',
@@ -162,14 +162,14 @@ export const uz = {
   'checkout.submit': 'Buyurtma berish',
   'checkout.submitting': 'Yuborilmoqda...',
   'checkout.disclaimer':
-    "Buyurtma berish tugmasini bosganingizda, ma'lumotlaringiz MUSA savdo bo'limiga yuboriladi.",
+    "Buyurtma berish tugmasini bosganingizda, ma'lumotlaringiz UJ VISION savdo bo'limiga yuboriladi.",
   'checkout.fillAll': "Iltimos, barcha maydonlarni to'ldiring",
   'checkout.cartEmpty': "Savatingiz bo'sh",
   'checkout.failed': "Buyurtma yuborilmadi. Internetni tekshirib, qayta urinib ko'ring",
   'checkout.success': 'Buyurtma muvaffaqiyatli berildi!',
   'checkout.successTitle': 'Buyurtma qabul qilindi!',
   'checkout.successText':
-    "Buyurtmangiz MUSA omboriga tushdi. Tez orada operatorimiz siz bilan bog'lanadi.",
+    "Buyurtmangiz UJ VISION do'koniga tushdi. Tez orada operatorimiz siz bilan bog'lanadi.",
   'checkout.viewOrders': "Buyurtmalarimni ko'rish",
 
   // ── Buyurtmalar ──
@@ -208,7 +208,7 @@ export const uz = {
   // ── Sevimlilar ──
   'favorites.title': 'Sevimlilar',
   'favorites.empty': "Sevimli mahsulotlar hali yo'q",
-  'favorites.emptyText': "Yoqtirgan mahsulotlaringizni ❤️ tugmasi bilan qo'shing.",
+  'favorites.emptyText': "Yoqtirgan modellaringizni ❤️ tugmasi bilan qo'shing.",
 
   // ── Profil ──
   'profile.title': 'Profil',
@@ -282,7 +282,7 @@ export const uz = {
   // ── Telegram to'sig'i ──
   'gate.title': 'Telegram orqali oching',
   'gate.text':
-    "MUSA do'koni Telegram ilovasi ichida ishlaydi. Buyurtma berish uchun botni oching va «Katalogni ochish» tugmasini bosing.",
+    "UJ VISION do'koni Telegram ilovasi ichida ishlaydi. Buyurtma berish uchun botni oching va «Katalogni ochish» tugmasini bosing.",
   'gate.button': "Telegram'da ochish",
 } as const
 

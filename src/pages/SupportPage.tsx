@@ -10,9 +10,9 @@ import {
   Clock,
   CheckCircle2,
   Code2,
-  ChefHat,
-  IceCreamCone,
-  Snowflake,
+  BadgeCheck,
+  RefreshCw,
+  Shirt,
 } from 'lucide-react'
 import { useState } from 'react'
 import { BRAND, DEVELOPER } from '../config/brand'
@@ -24,59 +24,59 @@ type Props = {
 
 const faqs_uz = [
   {
-    q: "MUSA mahsulotlari nimasi bilan ajralib turadi?",
-    a: "MUSA — yarim tayyor mahsulotlar, muzqaymoq va siroklar ishlab chiqaradi. Xomashyo har kuni yangi, mahsulot tayyorlangan zahoti shok muzlatishdan o‘tadi. Sun’iy qo‘shimchalar va konservantlar ishlatilmaydi.",
+    q: "UJ VISION qanday do'kon?",
+    a: "UJ VISION — zamonaviy kiyimlar do'koni: tepa kiyimlar, pastgi kiyimlar va oyoq kiyimlari. Har bir model qo'lda tanlanadi: mato sifati, tikuv va posadka tekshirilgandan keyingina katalogga qo'yiladi.",
   },
   {
-    q: "Qanday mahsulotlar bor?",
-    a: "Yarim tayyor: chuchvara, manti, somsa, kotlet, naggets, lyulya-kabob, xamir mahsulotlari. Shirinliklar: muzqaymoq va glazurlangan siroklar. To‘liq ro‘yxat va vaznlar katalogda ko‘rsatilgan.",
+    q: "O'lchamni qanday tanlayman?",
+    a: "Har bir mahsulot sahifasida mavjud o'lchamlar ko'rsatilgan (S, M, L, XL yoki raqamli). Ikkilansangiz, Telegram orqali yozing — bo'y va vazningizga qarab o'lcham tavsiya qilamiz.",
   },
   {
-    q: "Mahsulot qanday yetkaziladi?",
-    a: "Toshkent bo‘ylab 24 soat ichida, termo-qopda muzlatilgan holda. Buyurtma holati o‘zgarganda sizga avtomatik bildirishnoma keladi.",
+    q: "O'lcham to'g'ri kelmasa, almashtirsa bo'ladimi?",
+    a: "Ha. Mahsulot kiyilmagan, yorliqlari joyida va savdo ko'rinishi saqlangan bo'lsa, 3 kun ichida boshqa o'lchamga almashtiramiz. Almashtirish uchun operatorga yozing.",
   },
   {
-    q: "Mahsulotni qanday saqlash kerak?",
-    a: "Barcha mahsulotlar muzlatgichda −18°C haroratda saqlanadi — muzqaymoq va siroklar ham. Bir marta erigan mahsulotni qayta muzlatish tavsiya etilmaydi.",
+    q: "Buyurtma qancha vaqtda yetkaziladi?",
+    a: "Toshkent bo'ylab 24 soat ichida. Viloyatlarga pochta xizmati orqali 2–4 kunda. Buyurtma holati o'zgarganda sizga avtomatik bildirishnoma keladi.",
   },
   {
-    q: "Eng kam buyurtma miqdori bormi?",
-    a: "Yo‘q, hatto bitta paketdan ham buyurtma berishingiz mumkin. Katta summadagi buyurtmalar bepul yetkaziladi — summa rasmiylashtirish sahifasida ko‘rsatiladi.",
+    q: "Kiyimni ko'rib, keyin to'lasam bo'ladimi?",
+    a: "Ha. Naqd to'lovni tanlasangiz, kuryer yetkazib bergan joyda mahsulotni ko'rib, o'lchab ko'rishingiz mumkin.",
   },
   {
-    q: "To‘lov qanday amalga oshiriladi?",
-    a: "Naqd pul (yetkazishda) yoki karta orqali o‘tkazma. Karta orqali to‘lasangiz, chekni botga yuboring — operator tekshirib tasdiqlaydi.",
+    q: "To'lov qanday amalga oshiriladi?",
+    a: "Naqd pul (yetkazishda) yoki karta orqali o'tkazma. Karta orqali to'lasangiz, chekni botga yuboring — operator tekshirib tasdiqlaydi.",
   },
   {
     q: "Ulgurji xarid yoki hamkorlik mumkinmi?",
-    a: "Ha. Do‘kon, kafe, restoran va distribyutorlar uchun alohida shartlar bor — quyidagi raqam yoki Telegram orqali bog‘laning.",
+    a: "Ha. Do'konlar va qayta sotuvchilar uchun alohida narxlar bor — quyidagi raqam yoki Telegram orqali bog'laning.",
   },
   {
     q: "Promo kod qanday ishlatiladi?",
-    a: "Buyurtma berish sahifasida «Promokod» maydoniga kodingizni kiriting va «Qo‘llash» tugmasini bosing. Chegirma avtomatik qo‘shiladi.",
+    a: "Buyurtma berish sahifasida «Promokod» maydoniga kodingizni kiriting va «Qo'llash» tugmasini bosing. Chegirma avtomatik qo'shiladi.",
   },
 ]
 
 const faqs_ru = [
   {
-    q: "Чем отличается продукция MUSA?",
-    a: "MUSA производит полуфабрикаты, мороженое и сырки. Сырьё свежее каждый день, продукт сразу после приготовления проходит шоковую заморозку. Без искусственных добавок и консервантов.",
+    q: "Что за магазин UJ VISION?",
+    a: "UJ VISION — магазин современной одежды: верхняя одежда, нижняя одежда и обувь. Каждая модель отбирается вручную: качество ткани, пошив и посадка проверяются до попадания в каталог.",
   },
   {
-    q: "Какие есть продукты?",
-    a: "Полуфабрикаты: пельмени, манты, самса, котлеты, наггетсы, люля-кебаб, тестовые изделия. Десерты: мороженое и глазированные сырки. Полный список и вес указаны в каталоге.",
+    q: "Как выбрать размер?",
+    a: "На странице каждого товара указаны доступные размеры (S, M, L, XL или числовые). Если сомневаетесь — напишите в Telegram, подберём размер по росту и весу.",
   },
   {
-    q: "Как доставляется заказ?",
-    a: "По Ташкенту — в течение 24 часов, в термосумке и замороженном виде. При изменении статуса заказа вы получите уведомление.",
+    q: "Можно ли обменять, если размер не подошёл?",
+    a: "Да. Если вещь не носили, бирки на месте и товарный вид сохранён, обменяем на другой размер в течение 3 дней. Для обмена напишите оператору.",
   },
   {
-    q: "Как хранить продукт?",
-    a: "Все продукты хранятся в морозильной камере при −18°C — мороженое и сырки тоже. Повторная заморозка размороженного продукта не рекомендуется.",
+    q: "Сколько идёт доставка?",
+    a: "По Ташкенту — в течение 24 часов. В регионы почтовой службой за 2–4 дня. При изменении статуса заказа вы получите уведомление.",
   },
   {
-    q: "Есть ли минимальный заказ?",
-    a: "Нет, заказать можно даже один пакет. Крупные заказы доставляются бесплатно — сумма указана на странице оформления.",
+    q: "Можно посмотреть вещь перед оплатой?",
+    a: "Да. При оплате наличными вы можете осмотреть и примерить товар при получении у курьера.",
   },
   {
     q: "Как осуществляется оплата?",
@@ -84,7 +84,7 @@ const faqs_ru = [
   },
   {
     q: "Возможна ли оптовая закупка или сотрудничество?",
-    a: "Да. Для магазинов, кафе, ресторанов и дистрибьюторов действуют отдельные условия — свяжитесь по телефону или в Telegram ниже.",
+    a: "Да. Для магазинов и реселлеров действуют отдельные цены — свяжитесь по телефону или в Telegram ниже.",
   },
   {
     q: "Как использовать промокод?",
@@ -125,7 +125,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export function SupportPage({ onBack }: Props) {
   const t = useT()
   // detect lang from localStorage
-  const lang = (localStorage.getItem('musaShopLang') ?? 'uz') as 'uz' | 'ru'
+  const lang = (localStorage.getItem('ujvisionLang') ?? 'uz') as 'uz' | 'ru'
   const faqs = lang === 'ru' ? faqs_ru : faqs_uz
 
   const contacts = [
@@ -166,14 +166,14 @@ export function SupportPage({ onBack }: Props) {
 
   const about = lang === 'ru'
     ? [
-        { icon: Snowflake, title: 'Шоковая заморозка', text: 'Продукт замораживается сразу после приготовления.' },
-        { icon: ChefHat, title: 'Свежее сырьё', text: 'Мясо, тесто и молочные продукты — свежие каждый день.' },
-        { icon: IceCreamCone, title: 'Широкий ассортимент', text: 'Полуфабрикаты, мороженое и глазированные сырки.' },
+        { icon: BadgeCheck, title: 'Проверенное качество', text: 'Ткань, пошив и посадка проверяются до попадания в каталог.' },
+        { icon: RefreshCw, title: 'Обмен размера', text: 'Не подошёл размер — обменяем в течение 3 дней.' },
+        { icon: Shirt, title: 'Широкий ассортимент', text: 'Верхняя и нижняя одежда, обувь.' },
       ]
     : [
-        { icon: Snowflake, title: 'Shok muzlatish', text: "Mahsulot tayyorlangan zahoti −18°C da muzlatiladi." },
-        { icon: ChefHat, title: 'Yangi xomashyo', text: "Go‘sht, xamir va sut mahsulotlari har kuni yangi." },
-        { icon: IceCreamCone, title: 'Keng assortiment', text: 'Yarim tayyor mahsulotlar, muzqaymoq va siroklar.' },
+        { icon: BadgeCheck, title: 'Tekshirilgan sifat', text: "Mato, tikuv va posadka katalogga qo‘yilishdan oldin tekshiriladi." },
+        { icon: RefreshCw, title: "O‘lcham almashtirish", text: "O‘lcham to‘g‘ri kelmasa, 3 kun ichida almashtiramiz." },
+        { icon: Shirt, title: 'Keng assortiment', text: 'Tepa va pastgi kiyimlar hamda oyoq kiyimlari.' },
       ]
 
   const features = lang === 'ru'
@@ -218,7 +218,7 @@ export function SupportPage({ onBack }: Props) {
         <div
           className="relative overflow-hidden rounded-3xl p-6"
           style={{
-            background: 'linear-gradient(135deg, #0a7a3d 0%, #04331c 100%)',
+            background: 'linear-gradient(135deg, #243155 0%, #10172c 100%)',
           }}
         >
           {/* Decorative circles */}
@@ -308,7 +308,7 @@ export function SupportPage({ onBack }: Props) {
         </div>
       </section>
 
-      {/* MUSA haqida */}
+      {/* Brend haqida */}
       <section
         className="px-5 pt-7 sm:px-10"
         style={{ animation: 'fadeInUp 0.4s ease 0.12s both' }}

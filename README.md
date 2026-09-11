@@ -1,7 +1,7 @@
-# MUSA Shop — Telegram Mini App
+# UJ VISION Shop — Telegram Mini App
 
-MUSA (muzlatilgan mahsulotlar — yarim tayyor, muzqaymoq, sirok) uchun
-Telegram mini app do'koni:
+UJ VISION (kiyimlar do'koni — tepa kiyimlar, pastgi kiyimlar, oyoq
+kiyimlari) uchun Telegram mini app do'koni:
 React + TypeScript + Tailwind CSS frontend, Vercel serverless API va aiogram
 asosidagi Telegram bot.
 
@@ -9,12 +9,13 @@ asosidagi Telegram bot.
 
 | Element | Qiymat |
 | --- | --- |
-| Asosiy rang | `#0A7A3D` (logo yashili) |
-| Aksent | `#F2C94C` (logo sarig'i) / matn uchun `#A9760A` |
-| Uchinchi rang | `#16359E` (logodagi ko'k yozuv) |
-| Shriftlar | Archivo Black (sarlavha), Montserrat (matn) |
-| Logotip | `src/images/musa-mark.webp` (belgi), `public/favicon-*.png` |
-| Hero rasm | `src/images/hero-products.webp` |
+| Asosiy rang | `#1B2545` (logotip foni — to'q ko'k) |
+| Ikkilamchi | `#FFFFFF` (logotip yozuvi) |
+| Aksent | `#C9A227` shampan oltini / matn uchun `#8F7220` |
+| Uchinchi rang | `#3A5A97` (ochiq ko'k — axborot bloklari) |
+| Shriftlar | Playfair Display (logotip, sarlavha), Montserrat (matn) |
+| Logotip | `src/images/uj-mark.webp` (belgi), `public/favicon-*.png` |
+| Hero rasm | hozircha yo'q — `src/pages/HomePage.tsx` dagi izohga qarang |
 
 Kompaniya ma'lumotlari (telefon, email, Telegram, bot username) bitta joyda:
 [`src/config/brand.ts`](src/config/brand.ts). Bot tomonida — `bot/config.py`.
@@ -23,9 +24,10 @@ Ranglar `src/styles.css` dagi CSS o'zgaruvchilarida. Komponentlarda hex
 yozilmaydi — faqat `var(--brand)` kabi tokenlar, shu tufayli qorong'i rejim
 bitta blokda hal bo'ladi.
 
-> Firebase loyihasi — `musa-onlineshop`, bot — [@musauz_bot](https://t.me/musauz_bot),
-> mini app — `https://musa-delivery.vercel.app`. Maxfiy qiymatlar (bot tokeni,
-> service account JSON) git'ga tushmaydi — [`DEPLOY.md`](./DEPLOY.md) ga qarang.
+> ⚠️ Firebase loyihasi, bot tokeni va domen hali ESKI loyihaniki
+> (`musa-onlineshop`). To'ldirilishi kerak bo'lgan qiymatlar ro'yxati —
+> [`DEPLOY.md`](./DEPLOY.md) → "0. UJ VISION ga o'tish". Maxfiy qiymatlar
+> (bot tokeni, service account JSON) git'ga tushmaydi.
 
 ## Tuzilma
 
@@ -33,7 +35,8 @@ bitta blokda hal bo'ladi.
 - `src/components/brand` — logotip komponenti.
 - `src/components` — qayta ishlatiluvchi layout, UI, mahsulot va buyurtma komponentlari.
 - `src/config/brand.ts` — brend va aloqa konstantalari.
-- `src/config/categories.ts` — uchta asosiy yo'nalish (bosh sahifadagi kartalar va katalog menyusi).
+- `src/config/categories.ts` — uchta asosiy yo'nalish: Tepa kiyimlar, Pastgi kiyimlar, Oyoq kiyimlar
+  (bosh sahifadagi kartalar va katalog menyusi).
 - `src/hooks` — ilovaning UI holati va biznes harakatlari.
 - `src/i18n` — o'zbekcha (asosiy) va ruscha lug'atlar.
 - `src/types` — markazlashtirilgan TypeScript domen turlari.

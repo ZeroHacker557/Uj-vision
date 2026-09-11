@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════
-# MUSA Shop — bot sozlamalari
+# UJ VISION Shop — bot sozlamalari
 #
 # Frontend tomonidagi mos fayllar:
 #   src/config/brand.ts     — bot username, aloqa ma'lumotlari
@@ -36,30 +36,34 @@ _load_env()
 # ── Telegram ──
 # Token .env dan keladi. Bo'sh bo'lsa bot ishga tushmaydi (bot.py tekshiradi).
 BOT_TOKEN    = os.environ.get("BOT_TOKEN", "")
-BOT_USERNAME = "musauz_bot"
+# TODO(UJ): @BotFather dan olingan yangi bot username'i.
+BOT_USERNAME = "ujvision_bot"
+# TODO(UJ): do'kon egasining Telegram ID'si (@userinfobot dan olinadi).
 ADMIN_IDS    = {7203124812}   # Egalar — panel orqali o'chirib bo'lmaydi
+# TODO(UJ): Vercel'dagi yangi domen.
 # BotFather /setdomain da ham aynan shu domen ko'rsatilgan bo'lishi kerak.
-MINI_APP_URL = "https://musa-delivery.vercel.app"
+MINI_APP_URL = "https://uj-vision.vercel.app"
 
 # ── Kompaniya aloqa ma'lumotlari (bot javoblarida ko'rinadi) ──
 # Frontend tomonidagi nusxasi: src/config/brand.ts
-COMPANY_NAME     = "MUSA"
-COMPANY_TAGLINE  = "Muzlatilgan mahsulotlar"
+COMPANY_NAME     = "UJ VISION"
+COMPANY_TAGLINE  = "Kiyimlar do'koni"
+# TODO(UJ): haqiqiy aloqa ma'lumotlari.
 SUPPORT_PHONE    = "+998 97 400 98 77"
-SUPPORT_EMAIL    = "abubakrfrontend@gmail.com"
-SUPPORT_TELEGRAM = "@for_name"
+SUPPORT_EMAIL    = "info@ujvision.uz"
+SUPPORT_TELEGRAM = "@ujvision"
 COMPANY_CITY     = "Toshkent, O'zbekiston"
-WORK_HOURS       = "09:00 — 20:00"
+WORK_HOURS       = "10:00 — 21:00"
 
 # ── Firebase ──
 # Service account JSON fayli (loyiha ildizida yoki bot/ papkasida).
 # Firebase Console → Project Settings → Service accounts →
 # "Generate new private key". Fayl .gitignore'da.
-FIREBASE_KEY_FILE       = "musa-onlineshop-firebase-adminsdk-fbsvc-f51dff6a35.json"
+FIREBASE_KEY_FILE       = "uj-vision-kiyimdokon-firebase-adminsdk-fbsvc-9623c3463b.json"
 # Storage bucket — mahsulot rasmlari shu yerga yuklanadi.
 # Console → Storage → bucket nomi (odatda <project-id>.firebasestorage.app).
 # src/config/firebase.ts dagi storageBucket bilan bir xil bo'lishi shart.
-FIREBASE_STORAGE_BUCKET = "musa-onlineshop.firebasestorage.app"
+FIREBASE_STORAGE_BUCKET = "uj-vision-kiyimdokon.firebasestorage.app"
 
 # ── Server ──
 API_HOST     = "0.0.0.0"
@@ -70,5 +74,6 @@ DB_FILE      = "database.json"
 # To'lov sozlamalari — faqat BOSHLANG'ICH qiymat.
 # Bot birinchi ishga tushganda bular Firestore'dagi settings/payment
 # hujjatiga ko'chiriladi. Undan keyin haqiqiy manba — o'sha hujjat (F-07).
+# TODO(UJ): do'konning haqiqiy karta raqami va egasi.
 CARD_NUMBER = "5614 6818 1872 7921"
 CARD_OWNER  = "Abubakir Abdulbositov"

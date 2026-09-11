@@ -10,30 +10,33 @@
 
 ---
 
-## 0. MUSA ga o'tish — to'ldiriladigan qiymatlar
+## 0. UJ VISION ga o'tish — to'ldiriladigan qiymatlar
 
-Loyiha MUSA brendiga to'liq o'tkazildi: ranglar, matnlar, logotip, hero
-rasmi, kategoriya ikonkalari va barcha kalitlar.
+Loyiha UJ VISION brendiga o'tkazildi: ranglar, matnlar, logotip, favicon,
+kategoriyalar, ikonkalar va bot javoblari.
 
-Kodda `TODO(MUSA)` qolmadi — quyidagi jadvalda ❌ bilan belgilanganlar
-faqat tashqi xizmatlarda (Vercel, BotFather, Firebase Console) qilinadi.
+Kodda qolgan `TODO(UJ)` belgilari — hali sizdan kutilayotgan qiymatlar.
+Ularni topish uchun: `grep -rn "TODO(UJ)" src bot`.
 
 | Nima | Qayerga | Holat |
 |---|---|---|
-| **Bot tokeni** | `bot/.env` (git'ga tushmaydi) | ✅ yozildi |
-| **Bot tokeni** | Vercel env `BOT_TOKEN` | ❌ **siz qo'shasiz** |
+| **Yangi bot tokeni** | `bot/.env` (git'ga tushmaydi) | ❌ **siz berasiz** |
+| **Yangi bot tokeni** | Vercel env `BOT_TOKEN` | ❌ **siz qo'shasiz** |
+| Bot username | `bot/config.py` → `BOT_USERNAME`, `src/config/brand.ts` | ❌ `ujvision_bot` (namuna) |
+| Firebase web config | `src/config/firebase.ts` | ❌ hali eski loyihaniki |
+| Firebase service account JSON | `bot/config.py` → `FIREBASE_KEY_FILE` + loyiha ildizi | ❌ hali eski loyihaniki |
 | Firebase service account JSON | Vercel env `FIREBASE_SERVICE_ACCOUNT` | ❌ **siz qo'shasiz** |
-| BotFather `/setdomain` → `musa-delivery.vercel.app` | Telegram | ❌ **siz qilasiz** |
+| Storage bucket | `bot/config.py` → `FIREBASE_STORAGE_BUCKET` | ❌ hali eski loyihaniki |
+| Mini app domeni | `bot/config.py` → `MINI_APP_URL` | ❌ `uj-vision.vercel.app` (namuna) |
+| BotFather `/setdomain` → yangi domen | Telegram | ❌ **siz qilasiz** |
 | Firestore Rules (4-bo'lim) | Firebase Console | ❌ **siz qilasiz** |
-| Firebase web config | `src/config/firebase.ts` (`musa-onlineshop`) | ✅ yozildi |
-| Service account fayli va bucket | `bot/config.py`, loyiha ildizida JSON | ✅ yozildi |
-| Bot username `musauz_bot` | `bot/config.py`, `src/config/brand.ts` | ✅ yozildi |
-| Mini app domeni | `bot/config.py` → `MINI_APP_URL` | ✅ yozildi |
-| Admin Telegram ID `7203124812` | `bot/config.py` → `ADMIN_IDS` | ✅ yozildi |
-| Aloqa raqami / email / Telegram | `src/config/brand.ts` va `bot/config.py` | ✅ yozildi |
-| To'lov kartasi | `bot/config.py` (eskisi qoldirildi) | ✅ yozildi |
-| Logotip, hero rasmi, favicon | `src/images/`, `public/favicon-*.png` | ✅ yozildi |
-| Brend ranglari va matnlar | `src/styles.css`, `src/i18n/*` | ✅ MUSA ga moslandi |
+| Admin Telegram ID | `bot/config.py` → `ADMIN_IDS` | ❌ tekshiring |
+| Aloqa raqami / email / Telegram | `src/config/brand.ts` va `bot/config.py` | ❌ namuna qiymatlar |
+| To'lov kartasi | `bot/config.py` → `CARD_NUMBER`, `CARD_OWNER` | ❌ eskisi qoldirildi |
+| Logotip va favicon | `src/images/uj-mark.webp`, `public/favicon-*.png` | ✅ yaratildi |
+| Brend ranglari va matnlar | `src/styles.css`, `src/i18n/*` | ✅ UJ VISION ga moslandi |
+| Kategoriyalar va ikonkalar | `src/config/categories.ts`, `bot/firebase_db.py` | ✅ kiyimga moslandi |
+| Hero surati | `src/pages/HomePage.tsx` | ⬜ ixtiyoriy (hozir fotosiz) |
 
 > **Bot tokeni hech qachon git'ga tushmaydi.** U `bot/.env` da, `.gitignore`
 > esa uni to'sadi. `bot/config.py` faqat `os.environ` dan o'qiydi. Yangi
@@ -69,11 +72,12 @@ bo'lsa:
 `initData` imzosi aynan shu token bilan tekshiriladi: token va Vercel'dagi
 qiymat mos kelmasa, mini app "Tizimga kirilmagan" xatosini beradi.
 
-> ⚠️ Bu repozitoriy V7 loyihasidan nusxalangan. Git tarixida eski
-> `ecommercy_test_bot` tokeni ochiq qolgan, `bot/.env` faylida esa hozir
-> ham V7 ning tokeni turibdi. MUSA uchun **yangi bot** oching va eski
-> tokenlarni @BotFather → **Revoke current token** bilan bekor qiling —
-> aks holda tokenni topgan odam o'sha bot nomidan ish yurita oladi.
+> ⚠️ Bu repozitoriy oldingi loyihalardan (V7, MUSA) nusxalangan. Git
+> tarixida eski `ecommercy_test_bot` tokeni ochiq qolgan, `bot/.env`
+> faylida esa hozir ham eski token turibdi. UJ VISION uchun **yangi bot**
+> oching va eski tokenlarni @BotFather → **Revoke current token** bilan
+> bekor qiling — aks holda tokenni topgan odam o'sha bot nomidan ish
+> yurita oladi.
 
 ---
 
@@ -90,9 +94,10 @@ Firebase Console → ⚙️ **Project Settings** → **Service accounts** →
 **Generate new private key**. Yuklab olingan JSON faylni matn muharririda
 oching va **butun mazmunini** (`{` dan `}` gacha) qiymat sifatida joylang.
 
-> Loyiha ildizidagi eski `*-firebase-adminsdk-*.json` fayllar V7 loyihasiniki.
-> Ular `.gitignore` da — git'ga tushmagan, lekin diskda turibdi: MUSA
-> kalitini qo'shgandan keyin ularni o'chirib tashlang.
+> Loyiha ildizida eski loyihalarning (`ecommercytest`, `musa-onlineshop`,
+> `v7-savdo`) `*-firebase-adminsdk-*.json` fayllari turibdi. Ular
+> `.gitignore` da — git'ga tushmagan, lekin diskda bor: UJ VISION kalitini
+> qo'shgandan keyin ularni o'chirib tashlang.
 
 Env o'zgaruvchilarni qo'shgandan keyin **qaytadan deploy qiling** —
 Vercel ularni faqat yangi build'ga qo'llaydi.

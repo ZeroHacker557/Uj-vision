@@ -1,7 +1,7 @@
 import {
-  Beef, Cake, Candy, Carrot, ChefHat, CookingPot, Croissant, Drumstick, Egg,
-  Fish, Grid2X2, Ham, IceCreamBowl, IceCreamCone, Milk, Package, Pizza,
-  Popsicle, Salad, Sandwich, Snowflake, Soup, Vegan, Wheat,
+  Backpack, Baby, Briefcase, Crown, Footprints, Gem, Glasses, Grid2X2,
+  Handbag, HardHat, Hand, Layers, Package, PersonStanding, Shirt, SportShoe,
+  Sparkles, Umbrella, Watch, Wallet, Wind,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -9,101 +9,111 @@ import {
  * Kategoriya ikonkasi.
  *
  * Avval bazadagi `icon` maydoniga qaraydi (admin tanlagan), topilmasa
- * nom bo'yicha taxmin qiladi, u ham bo'lmasa umumiy qozon ishlatiladi.
+ * nom bo'yicha taxmin qiladi, u ham bo'lmasa umumiy ko'ylak ishlatiladi.
  * Ilgari faqat oldindan yozilgan nomlar bilan solishtirilardi, shuning
  * uchun har qanday yangi kategoriya doim quti bo'lib qolardi (F-17).
  *
- * Ro'yxat MUSA assortimentiga moslangan: yarim tayyor mahsulotlar
- * (chuchvara, manti, somsa, kotlet, naggets), muzqaymoq va siroklar.
+ * Ro'yxat UJ VISION assortimentiga moslangan: tepa kiyimlar (ko'ylak,
+ * futbolka, ko'zok, kurtka, kostyum), pastgi kiyimlar (shim, jinsi,
+ * shortik, yubka), oyoq kiyimlar va aksessuarlar.
  */
 const BY_KEY: Record<string, LucideIcon> = {
   all: Grid2X2,
 
-  // Xamirli mahsulotlar
-  dumpling: Soup,
-  chuchvara: Soup,
-  pelmeni: Soup,
-  manti: CookingPot,
-  somsa: Croissant,
-  samsa: Croissant,
-  hanum: CookingPot,
-  xamir: Wheat,
-  dough: Wheat,
-  lagmon: Soup,
-  ugra: Wheat,
+  // Asosiy yo'nalishlar (config/categories.ts dagi kalitlar)
+  tepa: Shirt,
+  pastgi: PersonStanding,
+  oyoq: SportShoe,
 
-  // Go'shtli mahsulotlar
-  meat: Beef,
-  gosht: Beef,
-  beef: Beef,
-  mol: Beef,
-  chicken: Drumstick,
-  tovuq: Drumstick,
-  nugget: Drumstick,
-  kotlet: Ham,
-  cutlet: Ham,
-  lulya: Ham,
-  kabob: Ham,
-  sausage: Ham,
-  hotdog: Sandwich,
-  burger: Sandwich,
-  pizza: Pizza,
+  // Tepa kiyimlar
+  shirt: Shirt,
+  koylak: Shirt,
+  futbolka: Shirt,
+  tshirt: Shirt,
+  polo: Shirt,
+  kozok: Layers,
+  sviter: Layers,
+  hoodie: Layers,
+  tolstovka: Layers,
+  kurtka: Wind,
+  palto: Wind,
+  jacket: Wind,
+  plash: Umbrella,
+  jilet: Layers,
+  kostyum: Briefcase,
+  suit: Briefcase,
+  pidjak: Briefcase,
 
-  // Muzqaymoq va sut shirinliklari
-  muzqaymoq: IceCreamCone,
-  morojniy: IceCreamCone,
-  plombir: IceCreamCone,
-  eskimo: Popsicle,
-  popsicle: Popsicle,
-  rojok: IceCreamCone,
-  vedro: IceCreamBowl,
-  sirok: Candy,
-  syrok: Candy,
-  glazur: Candy,
-  tvorog: Milk,
-  sut: Milk,
-  dairy: Milk,
-  milk: Milk,
+  // Pastgi kiyimlar
+  shim: PersonStanding,
+  pants: PersonStanding,
+  jeans: PersonStanding,
+  shortik: PersonStanding,
+  yubka: PersonStanding,
+  dress: PersonStanding,
+  libos: PersonStanding,
+
+  // Oyoq kiyimlar
+  poyabzal: SportShoe,
+  shoes: SportShoe,
+  krossovka: SportShoe,
+  botinka: SportShoe,
+  tufli: SportShoe,
+  shippak: SportShoe,
+  paypoq: Footprints,
+
+  // Aksessuarlar
+  sumka: Handbag,
+  bag: Handbag,
+  ryukzak: Backpack,
+  hamyon: Wallet,
+  kamar: Hand,
+  soat: Watch,
+  watch: Watch,
+  kozoynak: Glasses,
+  zargarlik: Gem,
+  taqinchoq: Gem,
+  bosh_kiyim: HardHat,
+  shapka: HardHat,
+  kepka: HardHat,
 
   // Boshqa
-  fish: Fish,
-  baliq: Fish,
-  egg: Egg,
-  tuxum: Egg,
-  vegetable: Carrot,
-  sabzavot: Carrot,
-  salad: Salad,
-  vegan: Vegan,
-  dessert: Cake,
-  shirinlik: Cake,
-  frozen: Snowflake,
-  muzlatilgan: Snowflake,
-  set: ChefHat,
+  bolalar: Baby,
+  kids: Baby,
+  premium: Crown,
+  yangi: Sparkles,
+  new: Sparkles,
+  set: Layers,
   box: Package,
 }
 
 const BY_NAME: [RegExp, LucideIcon][] = [
-  [/chuchvara|pelmen|dumpling|пельмен|чучвар/i, Soup],
-  [/manti|hanum|xonim|мант|ханум/i, CookingPot],
-  [/somsa|samsa|самс/i, Croissant],
-  [/lagʻmon|lagmon|ugra|лагман/i, Soup],
-  [/xamir|dough|тест/i, Wheat],
-  [/kotlet|lyulya|lʻulya|kabob|kolbasa|sosiska|котлет|люля|колбас|сосис/i, Ham],
-  [/tovuq|nagget|nugget|chicken|товук|кур|наггет/i, Drumstick],
-  [/goʻsht|gosht|mol|qoʻy|beef|meat|мяс|говяд/i, Beef],
-  [/baliq|fish|рыб/i, Fish],
-  [/burger|sendvich|hot ?dog|бургер|сэндвич/i, Sandwich],
-  [/pitsa|pizza|пицц/i, Pizza],
-  [/tuxum|egg|яйц/i, Egg],
-  [/sabzavot|vegetable|овощ/i, Carrot],
-  [/salat|salad|салат/i, Salad],
-  [/sirok|syrok|glazur|tvorog|сырок|сырк|творож|глазир/i, Candy],
-  [/eskimo|muzli tayoq|эскимо/i, Popsicle],
-  [/muzqaymoq|plombir|morojen|rojok|морожен|пломбир|рожок/i, IceCreamCone],
-  [/sut|dairy|молоч|молоко/i, Milk],
-  [/shirinlik|dessert|tort|десерт|торт/i, Cake],
-  [/muzlatilgan|frozen|заморож/i, Snowflake],
-  [/toʻplam|set|combo|набор/i, ChefHat],
+  // Asosiy yo'nalishlar — bazadagi nom bilan kelganda ham tanilsin
+  [/tepa kiyim|верхн(яя|ие) одежд|tops?\b/i, Shirt],
+  [/pastgi kiyim|нижн(яя|ие) одежд|bottoms?\b/i, PersonStanding],
+  [/oyoq kiyim|обув/i, SportShoe],
+  [/bola|kids|child|детск|дети/i, Baby],
+  [/ko'?ylak|koylak|koʻylak|рубашк|сорочк|shirt/i, Shirt],
+  [/futbolka|t-?shirt|polo|футболк|поло/i, Shirt],
+  [/ko'?zok|sviter|svitr|hoodie|tolstovka|свитер|худи|толстовк|кофт/i, Layers],
+  [/kurtka|palto|plash|куртк|пальто|плащ|jacket|coat/i, Wind],
+  [/kostyum|pidjak|костюм|пиджак|suit|blazer/i, Briefcase],
+  [/shim|jeans|jinsi|shortik|брюк|джинс|шорт|штан|pants/i, PersonStanding],
+  [/yubka|libos|ko'?ylakcha|платье|юбк|dress|skirt/i, PersonStanding],
+  [/poyabzal|krossovka|botinka|tufli|shippak|кроссовк|ботинк|туфл|shoes|sneaker/i, SportShoe],
+  [/paypoq|носк|socks/i, Footprints],
+  [/sumka|сумк|bag|clutch/i, Handbag],
+  [/ryukzak|рюкзак|backpack/i, Backpack],
+  [/hamyon|кошел|портмоне|wallet/i, Wallet],
+  [/kamar|ремен|поясь?|belt/i, Hand],
+  [/soat|час(ы|ов)|watch/i, Watch],
+  [/ko'?zoynak|очк|glasses|sunglass/i, Glasses],
+  [/zargar|taqinchoq|bijut|украшен|ювелир|jewel/i, Gem],
+  [/shapka|kepka|bosh kiyim|шапк|кепк|головн|hat|cap/i, HardHat],
+  [/aksessuar|аксессуар|accessor/i, Watch],
+  [/premium|lyuks|люкс|премиум/i, Crown],
+  [/yangi|nov(inka|yy)|нов(ый|инк)|new/i, Sparkles],
+  [/to'?plam|set|combo|набор/i, Layers],
   [/barcha|hamma|все|all/i, Grid2X2],
 ]
 
@@ -123,5 +133,5 @@ export function categoryIcon(icon?: string, name?: string): LucideIcon {
       if (pattern.test(name)) return Icon
     }
   }
-  return CookingPot
+  return Shirt
 }

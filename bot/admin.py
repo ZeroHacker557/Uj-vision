@@ -158,8 +158,8 @@ def product_edit_kb(prod_id) -> InlineKeyboardMarkup:
          InlineKeyboardButton(text="🎯 Chegirma", callback_data=f"pedit_discount_{prod_id}")],
         [InlineKeyboardButton(text="📦 Qoldiq", callback_data=f"pedit_stock_{prod_id}"),
          InlineKeyboardButton(text="📝 Tavsif", callback_data=f"pedit_description_{prod_id}")],
-        [InlineKeyboardButton(text="⚖️ Vaznlar", callback_data=f"pedit_sizes_{prod_id}"),
-         InlineKeyboardButton(text="🍽 Turlar", callback_data=f"pedit_color_{prod_id}")],
+        [InlineKeyboardButton(text="📏 O'lchamlar", callback_data=f"pedit_sizes_{prod_id}"),
+         InlineKeyboardButton(text="🎨 Ranglar", callback_data=f"pedit_color_{prod_id}")],
         [InlineKeyboardButton(text="📂 Kategoriya", callback_data=f"pcat_{prod_id}"),
          InlineKeyboardButton(text="🖼 Rasmlar", callback_data=f"pimg_{prod_id}")],
         [InlineKeyboardButton(text="🗑 Mahsulotni o'chirish", callback_data=f"prod_del_{prod_id}")],
@@ -444,9 +444,9 @@ async def cb_view_product(callback: CallbackQuery, bot: Bot):
         text += f"💰 Eski narx: <s>{db.format_price(p['oldPrice'])}</s>\n"
     text += f"📂 Kategoriya: {p['category']}\n"
     if p.get("color"):
-        text += f"🍽 Turi: {p['color']}\n"
+        text += f"🎨 Rang: {p['color']}\n"
     if p.get("sizes"):
-        text += f"⚖️ Vazn: {', '.join(p['sizes'])}\n"
+        text += f"📏 O'lcham: {', '.join(p['sizes'])}\n"
     if p.get("discount"):
         text += f"🏷 Chegirma: {p['discount']}\n"
     if p.get("description"):
@@ -622,7 +622,7 @@ async def cb_skip_desc(callback: CallbackQuery, state: FSMContext):
     await state.set_state(AddProduct.sizes)
     await safe_edit_msg(callback, callback.message.html_text)
     await callback.message.answer(
-        "6️⃣ Vaznlarni vergul bilan yozing.\nMasalan: <code>400 g, 800 g, 1 kg</code>",
+        "6️⃣ O'lchamlarni vergul bilan yozing.\nMasalan: <code>S, M, L, XL</code>",
         reply_markup=skip_kb("sizes"),
         parse_mode="HTML"
     )
@@ -637,7 +637,7 @@ async def process_description(message: Message, state: FSMContext):
     await state.update_data(description=desc)
     await state.set_state(AddProduct.sizes)
     await message.answer(
-        "6️⃣ Vaznlarni vergul bilan yozing.\nMasalan: <code>400 g, 800 g, 1 kg</code>",
+        "6️⃣ O'lchamlarni vergul bilan yozing.\nMasalan: <code>S, M, L, XL</code>",
         reply_markup=skip_kb("sizes"),
         parse_mode="HTML"
     )
@@ -651,7 +651,7 @@ async def cb_skip_sizes(callback: CallbackQuery, state: FSMContext):
     await state.set_state(AddProduct.color)
     await safe_edit_msg(callback, callback.message.html_text)
     await callback.message.answer(
-        "7️⃣ Turlarni vergul bilan yozing.\nMasalan: <code>Mol go'shti, Tovuq, Qo'y go'shti</code>",
+        "7️⃣ Ranglarni vergul bilan yozing.\nMasalan: <code>Qora, Oq, Bej</code>",
         reply_markup=skip_kb("color"),
         parse_mode="HTML"
     )
@@ -666,7 +666,7 @@ async def process_sizes(message: Message, state: FSMContext):
     await state.update_data(sizes=sizes)
     await state.set_state(AddProduct.color)
     await message.answer(
-        "7️⃣ Turlarni vergul bilan yozing.\nMasalan: <code>Mol go'shti, Tovuq, Qo'y go'shti</code>",
+        "7️⃣ Ranglarni vergul bilan yozing.\nMasalan: <code>Qora, Oq, Bej</code>",
         reply_markup=skip_kb("color"),
         parse_mode="HTML"
     )
@@ -1087,14 +1087,14 @@ EDIT_FIELDS = {
         "Chegirma", "text_or_empty",
     ),
     "sizes": (
-        "Vaznlarni vergul bilan yozing, masalan <code>400 g, 800 g, 1 kg</code>.\n"
+        "O'lchamlarni vergul bilan yozing, masalan <code>S, M, L, XL</code>.\n"
         "Olib tashlash uchun <code>-</code> yuboring:",
-        "Vaznlar", "list",
+        "O'lchamlar", "list",
     ),
     "color": (
-        "Turlarni vergul bilan yozing, masalan <code>Mol go'shti, Tovuq</code>.\n"
+        "Ranglarni vergul bilan yozing, masalan <code>Qora, Oq, Bej</code>.\n"
         "Olib tashlash uchun <code>-</code> yuboring:",
-        "Turlar", "text_or_empty",
+        "Ranglar", "text_or_empty",
     ),
 }
 
@@ -1586,9 +1586,9 @@ async def cb_order_view(callback: CallbackQuery):
         prod = item.get("product") or item
         variant = []
         if item.get("size"):
-            variant.append(f"Vazn: {item['size']}")
+            variant.append(f"O'lcham: {item['size']}")
         if item.get("color"):
-            variant.append(f"Turi: {item['color']}")
+            variant.append(f"Rang: {item['color']}")
         var_text = f" ({', '.join(variant)})" if variant else ""
         qty = item.get("quantity", 1)
         price = prod.get("price", 0)

@@ -1,4 +1,4 @@
-import mark from '../../images/musa-mark.webp'
+import mark from '../../images/uj-mark.webp'
 import { BRAND } from '../../config/brand'
 
 type Props = {
@@ -10,12 +10,15 @@ type Props = {
 }
 
 /**
- * MUSA logotipi.
+ * UJ VISION logotipi.
  *
- * Belgi — logotipning o'zi: yashil fon ustidagi sariq plita. Rasm allaqachon
- * yashil bo'lgani uchun ostiga qo'shimcha fon qo'yilmaydi, faqat burchaklari
- * yumaloqlanadi — shu tariqa yorug' va qorong'i temada bir xil ko'rinadi va
- * favicon bilan aynan mos tushadi.
+ * Belgi — logotipning qisqartmasi: to'q ko'k maydon ustidagi oq serif
+ * "UJ" va ostidagi ingichka chiziq. Rasm allaqachon to'q ko'k bo'lgani
+ * uchun ostiga qo'shimcha fon qo'yilmaydi, faqat burchaklari
+ * yumaloqlanadi — shu tariqa yorug' va qorong'i temada bir xil
+ * ko'rinadi va favicon bilan aynan mos tushadi.
+ *
+ * Yozuv esa logotipdagidek: serif, katta harf, keng interval (.logotype).
  */
 export function BrandLogo({ size = 44, markOnly = false, className = '' }: Props) {
   return (
@@ -29,7 +32,7 @@ export function BrandLogo({ size = 44, markOnly = false, className = '' }: Props
         style={{
           width: size,
           height: size,
-          borderRadius: size * 0.28,
+          borderRadius: size * 0.22,
           boxShadow: 'var(--shadow-brand)',
         }}
         decoding="async"
@@ -38,17 +41,17 @@ export function BrandLogo({ size = 44, markOnly = false, className = '' }: Props
       {!markOnly && (
         <span className="min-w-0 leading-none">
           <b
-            className="wordmark block"
-            style={{ fontSize: size * 0.6, color: 'var(--ink)' }}
+            className="logotype block"
+            style={{ fontSize: size * 0.42, color: 'var(--ink)' }}
           >
             {BRAND.name}
           </b>
           <small
-            className="mt-1 block truncate font-bold uppercase"
+            className="mt-1.5 block truncate font-semibold uppercase"
             style={{
-              fontSize: Math.max(7, size * 0.17),
-              letterSpacing: '0.1em',
-              color: 'var(--brand)',
+              fontSize: Math.max(7, size * 0.16),
+              letterSpacing: '0.16em',
+              color: 'var(--muted)',
             }}
           >
             {BRAND.tagline}

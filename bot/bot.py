@@ -1,7 +1,8 @@
 """
-MUSA Shop Telegram Bot — Admin panel + Mini App + To'lov tizimi
+UJ VISION Shop Telegram Bot — Admin panel + Mini App + To'lov tizimi
 
-MUSA — muzlatilgan mahsulotlar do'koni: yarim tayyor, muzqaymoq, sirok.
+UJ VISION — kiyimlar do'koni: tepa kiyimlar, pastgi kiyimlar,
+oyoq kiyimlari.
 """
 import asyncio
 import json
@@ -68,8 +69,8 @@ STATUS_EMOJI = {
 def main_kb(admin: bool = False):
     rows = [
         # Oddiy tugma — bosilganda pastdagi menyu tugmasiga yo'naltiradi.
-        # Mini app faqat yozuv maydoni yonidagi "🥟 Katalog" orqali ochiladi.
-        [KeyboardButton(text="🥟 Katalogni ochish")],
+        # Mini app faqat yozuv maydoni yonidagi "👗 Katalog" orqali ochiladi.
+        [KeyboardButton(text="👗 Katalogni ochish")],
         [KeyboardButton(text="📦 Buyurtmalarim")],
         [KeyboardButton(text="📞 Biz bilan aloqa"), KeyboardButton(text="ℹ️ Yordam")]
     ]
@@ -171,8 +172,8 @@ def get_products_text(products: list) -> str:
         item_sum = db.format_price(price * qty)
         
         variant_info = []
-        if size: variant_info.append(f"Vazn: {size}")
-        if color: variant_info.append(f"Turi: {color}")
+        if size: variant_info.append(f"O'lcham: {size}")
+        if color: variant_info.append(f"Rang: {color}")
         var_text = f" ({', '.join(variant_info)})" if variant_info else ""
         
         lines += f"  <b>{i}. {name}</b>{var_text}\n"
@@ -195,7 +196,7 @@ def current_caption(msg) -> str:
 def build_receipt_caption(order: dict | None, display_id: str) -> str:
     """
     Adminga yuboriladigan chek izohi: mijoz ma'lumotlari, mahsulotlar
-    (turi va vazni bilan) hamda to'liq hisob-kitob.
+    (rangi va o'lchami bilan) hamda to'liq hisob-kitob.
 
     Telegram izohni 1024 belgi bilan cheklaydi — sig'masa mahsulotlar
     ro'yxati qisqartiriladi, mijoz ma'lumotlari esa doim to'liq qoladi.
@@ -246,9 +247,9 @@ def build_receipt_caption(order: dict | None, display_id: str) -> str:
 
         variant = []
         if item.get("size"):
-            variant.append(f"Vazn: {item['size']}")
+            variant.append(f"O'lcham: {item['size']}")
         if item.get("color"):
-            variant.append(f"Turi: {item['color']}")
+            variant.append(f"Rang: {item['color']}")
         var_text = f" ({', '.join(variant)})" if variant else ""
 
         lines.append(
@@ -636,7 +637,7 @@ async def handle_my_orders(message: Message):
     if not orders:
         await message.answer(
             "📦 <b>Sizda hozircha buyurtmalar mavjud emas.</b>\n\n"
-            "Katalogdan yoqqan mahsulotni tanlab, birinchi buyurtmangizni bering! 🥟"
+            "Katalogdan yoqqan modelni tanlab, birinchi buyurtmangizni bering! 👗"
         )
         return
 
@@ -689,8 +690,8 @@ async def handle_my_orders(message: Message):
             name  = prod.get("name", "—")
             
             variant = []
-            if size: variant.append(f"Vazn: {size}")
-            if color: variant.append(f"Turi: {color}")
+            if size: variant.append(f"O'lcham: {size}")
+            if color: variant.append(f"Rang: {color}")
             v_text = f" ({', '.join(variant)})" if variant else ""
             
             text += f"  {idx}. {name}{v_text} — <b>{qty} ta</b>\n"
@@ -739,8 +740,8 @@ async def cmd_start(message: Message, state: FSMContext):
                 name  = prod.get("name", "—")
                 
                 variant_info = []
-                if size: variant_info.append(f"Vazn: {size}")
-                if color: variant_info.append(f"Turi: {color}")
+                if size: variant_info.append(f"O'lcham: {size}")
+                if color: variant_info.append(f"Rang: {color}")
                 var_text = f" ({', '.join(variant_info)})" if variant_info else ""
                 
                 u_text += f"  • {name}{var_text} × {qty}\n"
@@ -763,9 +764,9 @@ async def cmd_start(message: Message, state: FSMContext):
     # ── Oddiy /start ──
     text = (
         f"Assalomu alaykum, <b>{user.first_name}</b>! 👋\n\n"
-        "🥟 <b>MUSA rasmiy do'koniga xush kelibsiz!</b>\n"
-        "<i>Muzlatilgan mahsulotlar — yangi xomashyo, shok muzlatish.</i>\n\n"
-        "🍽 <b>Yarim tayyor mahsulotlar, muzqaymoq va siroklar.</b>\n\n"
+        "👗 <b>UJ VISION rasmiy do'koniga xush kelibsiz!</b>\n"
+        "<i>Tanlangan modellar — tekshirilgan mato va tikuv sifati.</i>\n\n"
+        "🧥 <b>Tepa kiyimlar, pastgi kiyimlar va oyoq kiyimlari.</b>\n\n"
         "👇 <i>Buyurtmani boshlash uchun quyidagi tugmani bosing:</i>"
     )
     await message.answer(text, reply_markup=main_kb(admin))
@@ -821,21 +822,21 @@ async def handle_admin_btn(message: Message, state: FSMContext):
     await cmd_admin(message, state)
 
 
-@dp.message(F.text == "🥟 Katalogni ochish")
+@dp.message(F.text == "👗 Katalogni ochish")
 async def handle_open_catalog(message: Message):
     """
     Katalog tugmasi bosilganda mini appni qayerdan ochishni ko'rsatadi.
     Tugmaning o'ziga web_app biriktirilmagan — do'kon yozuv maydoni
     yonidagi doimiy menyu tugmasi orqali ochiladi.
     """
-    text = "🥟 <b>MUSA KATALOGI</b>\n"
+    text = "👗 <b>UJ VISION KATALOGI</b>\n"
     text += "━" * 22 + "\n\n"
     text += "Do'konimiz Telegram ilovasi ichida ochiladi.\n\n"
     text += "👇 Pastda, <b>yozuv maydonining chap tomonida</b>\n"
-    text += "   <b>«🥟 Katalog»</b> tugmasi turibdi.\n\n"
+    text += "   <b>«👗 Katalog»</b> tugmasi turibdi.\n\n"
     text += "Shu tugmani bosing — do'kon shu yerning o'zida ochiladi.\n\n"
     text += "━" * 22 + "\n"
-    text += "✨ <i>Mahsulotlarni ko'ring, savatga qo'shing va\n"
+    text += "✨ <i>Modellarni ko'ring, savatga qo'shing va\n"
     text += "bir necha bosishda buyurtma bering.</i>"
 
     await message.answer(text)
@@ -844,13 +845,14 @@ async def handle_open_catalog(message: Message):
 @dp.message(F.text == "📞 Biz bilan aloqa")
 async def cmd_contact(message: Message):
     await message.answer(
-        "📞 <b>MUSA bilan bog'lanish:</b>\n\n"
+        "📞 <b>UJ VISION bilan bog'lanish:</b>\n\n"
         f"💬 <b>Mijozlar xizmati:</b> {SUPPORT_TELEGRAM}\n"
         f"📞 <b>Telefon raqam:</b> {SUPPORT_PHONE}\n"
         f"✉️ <b>Email:</b> {SUPPORT_EMAIL}\n"
         f"📍 <b>Manzil:</b> {COMPANY_CITY}\n"
         f"⏰ <b>Ish vaqti:</b> {WORK_HOURS}\n\n"
-        "<i>Ulgurji xarid va hamkorlik bo'yicha ham shu raqamga murojaat qiling.</i>"
+        "<i>Ulgurji xarid, hamkorlik va o'lcham almashtirish bo'yicha ham"
+        " shu raqamga murojaat qiling.</i>"
     )
 
 
@@ -858,9 +860,9 @@ async def cmd_contact(message: Message):
 async def cmd_help(message: Message):
     await message.answer(
         "ℹ️ <b>Botdan qanday foydalanish mumkin?</b>\n\n"
-        "1️⃣ Yozuv maydoni yonidagi <b>«🥟 Katalog»</b> tugmasini bosib, "
-        "MUSA mahsulotlari bilan tanishing.\n"
-        "2️⃣ O'zingizga yoqqan mahsulotlarni <b>Savatga</b> qo'shing.\n"
+        "1️⃣ Yozuv maydoni yonidagi <b>«👗 Katalog»</b> tugmasini bosib, "
+        "UJ VISION kolleksiyasi bilan tanishing.\n"
+        "2️⃣ Yoqqan modelning <b>o'lcham va rangini</b> tanlab, <b>Savatga</b> qo'shing.\n"
         "3️⃣ Buyurtmani rasmiylashtirishda <b>Naqd</b> yoki <b>Karta</b> orqali to'lov usulini tanlang.\n"
         "4️⃣ Agar karta orqali to'lov qilsangiz, to'lov chekini botga yuboring.\n"
         "5️⃣ Buyurtmangiz holatini <b>Buyurtmalarim</b> bo'limidan kuzatib boring.\n\n"
@@ -899,7 +901,7 @@ async def main():
 
     try:
         await bot.set_chat_menu_button(
-            menu_button=MenuButtonWebApp(text="🥟 Katalog", web_app=WebAppInfo(url=MINI_APP_URL))
+            menu_button=MenuButtonWebApp(text="👗 Katalog", web_app=WebAppInfo(url=MINI_APP_URL))
         )
     except Exception as e:
         logger.warning(f"Menu button: {e}")

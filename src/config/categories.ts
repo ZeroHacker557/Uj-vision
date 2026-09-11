@@ -1,54 +1,53 @@
-import yarimTayyor from '../images/cat-yarim-tayyor.webp'
-import muzqaymoq from '../images/cat-muzqaymoq.webp'
-import sirok from '../images/cat-sirok.webp'
 import type { Category } from '../types/domain'
 
 /**
- * MUSA ning uchta asosiy yo'nalishi.
+ * UJ VISION ning uchta asosiy yo'nalishi.
  *
  * Bular Firestore'dan emas, shu yerdan keladi — bozorga chiqish
  * yo'nalishlari kamdan-kam o'zgaradi va katalog bo'sh bo'lganda ham
  * ko'rinib turishi kerak. Bot admin paneli orqali qo'shiladigan mayda
- * kategoriyalar (Chuchvara, Manti, Plombir...) esa bazadan keladi va
- * shularning yoniga qo'shiladi.
+ * kategoriyalar (Ko'ylaklar, Futbolkalar, Kurtkalar...) esa bazadan
+ * keladi va shularning yoniga qo'shiladi.
  *
  * ⚠️ `name` — mahsulotning Firestore'dagi `category` maydoni bilan
  * AYNAN mos bo'lishi shart. Bot admin panelida mahsulot qo'shganda
- * kategoriya nomi shu ro'yxatdan yozilsa, filtr ishlaydi. Nomni
- * o'zgartirsangiz, bazadagi mahsulotlarnikini ham o'zgartiring.
+ * kategoriya nomi shu ro'yxatdan tanlanadi, shunda filtr ishlaydi.
+ * Nomni o'zgartirsangiz, bot tomonidagi nusxasini ham o'zgartiring:
+ * bot/firebase_db.py → MAIN_CATEGORIES.
  */
 export type MainLine = {
   name: string
   /** category-icons.ts dagi kalit. */
   icon: string
-  /** Karta foni — logotipdagi uch rangdan. */
+  /** Karta foni — brend ko'kining uch pog'onasi. */
   gradient: string
   /**
    * Foto — gradient o'rniga ko'rinadi. Rasmning nisbati karta bilan
    * bir xil bo'lsin, aks holda `cover` uni qirqadi: keng karta 2.2:1
    * (1320x600), yarim kartalar 1.27:1 (990x780).
+   *
+   * Qo'yish uchun: rasmni `src/images/` ga tashlang, yuqorida
+   * `import tepa from '../images/cat-tepa-kiyimlar.webp'` deb import
+   * qiling va shu maydonga yozing.
    */
   image?: string
 }
 
 export const MAIN_LINES: MainLine[] = [
   {
-    name: 'Yarim tayyor mahsulotlar',
-    icon: 'chuchvara',
-    gradient: 'linear-gradient(135deg, #0f8a48 0%, #04331c 100%)',
-    image: yarimTayyor,
+    name: 'Tepa kiyimlar',
+    icon: 'tepa',
+    gradient: 'linear-gradient(135deg, #26325a 0%, #0e1426 100%)',
   },
   {
-    name: 'Muzqaymoqlar',
-    icon: 'muzqaymoq',
-    gradient: 'linear-gradient(135deg, #2f5ed6 0%, #101f5e 100%)',
-    image: muzqaymoq,
+    name: 'Pastgi kiyimlar',
+    icon: 'pastgi',
+    gradient: 'linear-gradient(135deg, #3a4a7d 0%, #161d38 100%)',
   },
   {
-    name: 'Siroklar',
-    icon: 'sirok',
-    gradient: 'linear-gradient(135deg, #d9a52a 0%, #7a5406 100%)',
-    image: sirok,
+    name: 'Oyoq kiyimlar',
+    icon: 'oyoq',
+    gradient: 'linear-gradient(135deg, #4a5675 0%, #1d2438 100%)',
   },
 ]
 

@@ -19,8 +19,8 @@ export const ru: Record<TranslationKey, string> = {
   'common.required': 'обязательно',
 
   // ── Бренд ──
-  'brand.tagline': 'Замороженные продукты',
-  'brand.slogan': 'Домашний вкус — быстро и просто',
+  'brand.tagline': 'Магазин одежды',
+  'brand.slogan': 'Ваш стиль — наш выбор',
 
   // ── Навигация ──
   'nav.home': 'Главная',
@@ -30,15 +30,15 @@ export const ru: Record<TranslationKey, string> = {
   'nav.profile': 'Профиль',
 
   // ── Главная ──
-  'home.searchPlaceholder': 'Поиск товара или категории...',
-  'home.heroBadge': 'Свежо и качественно',
-  'home.heroTitle': 'Домашний вкус — за несколько минут',
-  'home.heroSubtitle': 'Полуфабрикаты, мороженое и сырки.',
-  'home.heroCta': 'Заказать',
+  'home.searchPlaceholder': 'Поиск одежды или категории...',
+  'home.heroBadge': 'Новый сезон',
+  'home.heroTitle': 'Найдите свой стиль с UJ VISION',
+  'home.heroSubtitle': 'Верхняя и нижняя одежда, обувь.',
+  'home.heroCta': 'Смотреть коллекцию',
   'home.lines': 'Направления',
-  'home.popular': 'Популярные товары',
+  'home.popular': 'Популярные модели',
   'home.seeAll': 'Смотреть все',
-  'home.emptyTitle': 'Товары появятся скоро!',
+  'home.emptyTitle': 'Коллекция появится скоро!',
   'home.emptyText': 'Как только админ добавит товары, они появятся здесь.',
 
   'benefit.delivery': 'Быстрая доставка',
@@ -47,16 +47,16 @@ export const ru: Record<TranslationKey, string> = {
   'benefit.paymentSub': 'Наличные или карта',
   'benefit.support': 'Связь 24/7',
   'benefit.supportSub': 'Всегда на связи',
-  'benefit.natural': 'Натуральный состав',
-  'benefit.naturalSub': 'Без искусственных добавок',
+  'benefit.original': 'Оригинал',
+  'benefit.originalSub': 'Гарантия качества',
 
   // ── Каталог ──
-  'catalog.title': 'Каталог товаров',
+  'catalog.title': 'Каталог одежды',
   'catalog.filters': 'Фильтры',
   'catalog.sortCheap': 'Сначала дешёвые',
   'catalog.sortExpensive': 'Сначала дорогие',
   'catalog.total': 'Всего {count} товаров',
-  'catalog.emptyCategory': 'В этой категории товаров нет',
+  'catalog.emptyCategory': 'В этой категории моделей нет',
   'catalog.emptyCategoryText': 'Выберите другую категорию.',
   'catalog.filterSummary': 'Категория: {category} • Цена: {sort}',
   'catalog.sortAsc': 'по возрастанию',
@@ -64,8 +64,8 @@ export const ru: Record<TranslationKey, string> = {
   'catalog.priceRange': 'Диапазон цен',
   'catalog.priceFrom': 'от',
   'catalog.priceTo': 'до',
-  'catalog.size': 'Вес',
-  'catalog.color': 'Вид',
+  'catalog.size': 'Размер',
+  'catalog.color': 'Цвет',
   'catalog.inStockOnly': 'Только в наличии',
   'catalog.reset': 'Сбросить',
   'catalog.apply': 'Применить',
@@ -75,9 +75,9 @@ export const ru: Record<TranslationKey, string> = {
 
   // ── Товар ──
   'product.title': 'Товар',
-  'product.fastDelivery': 'Доставим замороженным',
-  'product.chooseColor': 'Выберите вид',
-  'product.chooseSize': 'Выберите вес',
+  'product.fastDelivery': 'Быстрая доставка по Ташкенту',
+  'product.chooseColor': 'Выберите цвет',
+  'product.chooseSize': 'Выберите размер',
   'product.about': 'О товаре',
   'product.zoom': 'Увеличить изображение',
   'product.addToCart': 'В корзину',
@@ -108,12 +108,12 @@ export const ru: Record<TranslationKey, string> = {
   'cart.title': 'Корзина',
   'cart.kinds': 'видов товара: {count}',
   'cart.empty': 'Ваша корзина пуста',
-  'cart.emptyText': 'Выберите понравившиеся товары.',
+  'cart.emptyText': 'Выберите понравившиеся модели.',
   'cart.total': 'Итого',
   'cart.checkout': 'Оформить заказ',
-  'cart.size': 'Вес',
-  'cart.color': 'Вид',
-  'cart.goToCatalog': 'Смотреть товары',
+  'cart.size': 'Размер',
+  'cart.color': 'Цвет',
+  'cart.goToCatalog': 'Смотреть каталог',
 
   // ── Поиск ──
   'search.placeholder': 'Поиск...',
@@ -156,13 +156,13 @@ export const ru: Record<TranslationKey, string> = {
     'После заполнения формы бот пришлёт вам сообщение. Отправьте чек об оплате боту — админ проверит и подтвердит.',
   'checkout.submit': 'Оформить заказ',
   'checkout.submitting': 'Отправка...',
-  'checkout.disclaimer': 'Нажимая кнопку, вы отправляете свои данные отделу продаж MUSA.',
+  'checkout.disclaimer': 'Нажимая кнопку, вы отправляете свои данные отделу продаж UJ VISION.',
   'checkout.fillAll': 'Пожалуйста, заполните все поля',
   'checkout.cartEmpty': 'Ваша корзина пуста',
   'checkout.failed': 'Заказ не отправлен. Проверьте интернет и попробуйте снова',
   'checkout.success': 'Заказ успешно оформлен!',
   'checkout.successTitle': 'Заказ принят!',
-  'checkout.successText': 'Ваш заказ поступил на склад MUSA. Наш оператор свяжется с вами в ближайшее время.',
+  'checkout.successText': 'Ваш заказ поступил в магазин UJ VISION. Наш оператор свяжется с вами в ближайшее время.',
   'checkout.viewOrders': 'Мои заказы',
 
   // ── Заказы ──
@@ -201,7 +201,7 @@ export const ru: Record<TranslationKey, string> = {
   // ── Избранное ──
   'favorites.title': 'Избранное',
   'favorites.empty': 'В избранном пока пусто',
-  'favorites.emptyText': 'Добавляйте любимые товары кнопкой ❤️.',
+  'favorites.emptyText': 'Добавляйте любимые модели кнопкой ❤️.',
 
   // ── Профиль ──
   'profile.title': 'Профиль',
@@ -275,6 +275,6 @@ export const ru: Record<TranslationKey, string> = {
   // ── Telegram ──
   'gate.title': 'Откройте через Telegram',
   'gate.text':
-    'Магазин MUSA работает внутри Telegram. Откройте бота и нажмите «Открыть каталог».',
+    'Магазин UJ VISION работает внутри Telegram. Откройте бота и нажмите «Открыть каталог».',
   'gate.button': 'Открыть в Telegram',
 }

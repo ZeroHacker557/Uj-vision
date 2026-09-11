@@ -524,14 +524,14 @@ def get_delivery_settings() -> dict:
     return {"fee": 0, "freeFrom": 0}
 
 
-# MUSA ning uchta asosiy yo'nalishi — mini app'da bosh sahifadagi yirik
+# UJ VISION ning uchta asosiy yo'nalishi — mini app'da bosh sahifadagi yirik
 # kartalar va katalog menyusi shu nomlarga tayanadi
 # (src/config/categories.ts). Bot birinchi ishga tushganda bazada yo'q
 # bo'lsa yaratamiz, aks holda admin mahsulotni ularga biriktira olmaydi.
 MAIN_CATEGORIES = [
-    ("Yarim tayyor mahsulotlar", "chuchvara"),
-    ("Muzqaymoqlar", "muzqaymoq"),
-    ("Siroklar", "sirok"),
+    ("Tepa kiyimlar", "tepa"),
+    ("Pastgi kiyimlar", "pastgi"),
+    ("Oyoq kiyimlar", "oyoq"),
 ]
 
 
