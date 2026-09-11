@@ -18,6 +18,15 @@ const CART_KEY = 'ujvisionCart'
 
 type CartItems = Record<string, { quantity: number; size?: string; color?: string }>
 
+/** Savatga qo'shilganda pastda chiqadigan tasdiq paneli uchun. */
+export type CartPrompt = {
+  cartKey: string
+  name: string
+  image?: string
+  size?: string
+  color?: string
+}
+
 function loadLikes(): number[] {
   try {
     return JSON.parse(localStorage.getItem(LIKES_KEY) || '[]')
@@ -57,6 +66,12 @@ export function useShopStore() {
   const [loading, setLoading] = useState(true)
   const [likedIds, setLikedIds] = useState<number[]>(loadLikes)
   const [cartItems, setCartItems] = useState<CartItems>(loadCart)
+  /**
+   * Savatga qo'shilgandan keyin pastda chiqadigan tasdiq paneli.
+   * Mijoz "Ha" desa — rasmiylashtirishga o'tadi, "Yo'q" desa — qo'shilgan
+   * dona savatdan qaytarib olinadi.
+   */
+  const [cartPrompt, setCartPrompt] = useState<CartPrompt | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isSearchOpen, setSearchOpen] = useState(false)
   const [isCartOpen, setCartOpen] = useState(false)
@@ -70,6 +85,9 @@ export function useShopStore() {
   // Bitta rasmiylashtirish uchun bitta kalit. Xato bo'lsa saqlanadi —
   // qayta urinishda server yangi buyurtma yaratmaydi.
   const orderKeyRef = useRef<string | null>(null)
+  /** Savat paneli va muvaffaqiyat oynasining avtomatik yopilish taymerlari. */
+  const promptTimer = useRef<number | null>(null)
+  const successTimer = useRef<number | null>(null)
   const [isAuthenticated, setAuthenticated] = useState(false)
   const [orderForm, setOrderForm] = useState<OrderForm>({
     name: '', phone: '', address: '', location: null, comment: '', paymentMethod: 'Naqd',
@@ -295,10 +313,23 @@ export function useShopStore() {
         color: color || product.color
       }
     }))
-    notify(t('product.addedToCart', { name: product.name }))
+
+    // Xabar o'rniga tasdiq paneli: mijoz nima qo'shilganini ko'radi va
+    // xuddi shu yerdan buyurtmani rasmiylashtira oladi.
+    if (promptTimer.current) window.clearTimeout(promptTimer.current)
+    setCartPrompt({
+      cartKey: key,
+      name: product.name,
+      image: product.images?.[0],
+      size: size || product.sizes?.[0],
+      color: color || product.color,
+    })
+    // Javob bo'lmasa panel o'zi yopiladi — mahsulot savatda qoladi.
+    promptTimer.current = window.setTimeout(() => setCartPrompt(null), 10000)
+
     hapticFeedback('medium')
     track('cart_add', product.id)
-  }, [notify, t])
+  }, [])
 
   const updateCartQuantity = useCallback((cartKey: string, nextQuantity: number) => {
     setCartItems((current) => {
@@ -310,11 +341,52 @@ export function useShopStore() {
     hapticFeedback('light')
   }, [])
 
+  const dismissCartPrompt = useCallback(() => {
+    if (promptTimer.current) window.clearTimeout(promptTimer.current)
+    setCartPrompt(null)
+  }, [])
+
+  /**
+   * "Yo'q" — aynan shu qo'shishni bekor qiladi.
+   *
+   * Butun qatorni o'chirmaydi: mijoz ilgari 2 dona qo'shib, uchinchisida
+   * "Yo'q" desa, avvalgi ikkitasi savatda qolishi kerak. Odatdagi holatda
+   * (birinchi marta qo'shilgan) mahsulot savatdan butunlay chiqadi.
+   */
+  const rejectCartPrompt = useCallback(() => {
+    if (!cartPrompt) return
+
+    const item = cartItems[cartPrompt.cartKey]
+    const removedCompletely = !item || item.quantity <= 1
+
+    setCartItems((current) => {
+      const existing = current[cartPrompt.cartKey]
+      if (!existing) return current
+
+      const next = { ...current }
+      if (existing.quantity <= 1) delete next[cartPrompt.cartKey]
+      else next[cartPrompt.cartKey] = { ...existing, quantity: existing.quantity - 1 }
+      return next
+    })
+
+    notify(t(removedCompletely ? 'cart.promptRemoved' : 'cart.promptUndone'))
+    dismissCartPrompt()
+    hapticFeedback('light')
+  }, [cartPrompt, cartItems, dismissCartPrompt, notify, t])
+
   const openCart = useCallback(() => setCartOpen(true), [])
   const closeCart = useCallback(() => setCartOpen(false), [])
 
+  /** Muvaffaqiyat oynasini darhol yopadi va zaxira taymerni to'xtatadi. */
+  const closeCheckoutSuccess = useCallback(() => {
+    if (successTimer.current) window.clearTimeout(successTimer.current)
+    setCheckoutDone(false)
+  }, [])
+
   const goToCheckout = useCallback(() => {
     track('checkout_start')
+    if (promptTimer.current) window.clearTimeout(promptTimer.current)
+    setCartPrompt(null)
     setCartOpen(false)
     setPage((current) => {
       setHistory((h) => [...h.slice(-19), current])
@@ -383,7 +455,10 @@ export function useShopStore() {
     setCheckoutDone(true)
     hapticSuccess()
     notify(t('checkout.success'))
-    setTimeout(() => setCheckoutDone(false), 4000)
+    // Zaxira taymer: mijoz hech narsa bosmasa oyna o'zi yopiladi.
+    // Tugma bosilganda esa closeCheckoutSuccess uni darhol to'xtatadi —
+    // aks holda oyna buyurtmalar sahifasi ustida turib qolardi.
+    successTimer.current = window.setTimeout(() => setCheckoutDone(false), 6000)
 
     return true
   }, [isSubmitting, orderForm, cartProducts, notify, t])
@@ -401,6 +476,8 @@ export function useShopStore() {
     navigate, goBack, openProduct, toggleLike,
     setSearchOpen, setQuery,
     addToCart, updateCartQuantity,
+    cartPrompt, dismissCartPrompt, rejectCartPrompt,
+    closeCheckoutSuccess,
     openCart, closeCart, goToCheckout,
     updateOrderForm, submitOrder,
     notify, clearToast: () => setToast(null),

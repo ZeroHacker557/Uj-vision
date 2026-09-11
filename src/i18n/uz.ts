@@ -21,6 +21,8 @@ export const uz = {
   'common.pcs': 'dona',
   'common.soon': 'tez orada!',
   'common.optional': 'ixtiyoriy',
+  'common.yes': 'Ha',
+  'common.no': "Yo'q",
   'common.required': 'majburiy',
 
   // ── Brend ──
@@ -119,6 +121,9 @@ export const uz = {
   'cart.size': "O'lcham",
   'cart.color': 'Rang',
   'cart.goToCatalog': 'Katalogni ko‘rish',
+  'cart.promptTitle': 'Buyurtmani rasmiylashtirasizmi?',
+  'cart.promptRemoved': 'Savatdan olib tashlandi',
+  'cart.promptUndone': 'Bitta dona olib tashlandi',
 
   // ── Qidiruv ──
   'search.placeholder': 'Qidirish...',

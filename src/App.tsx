@@ -4,6 +4,7 @@ import { SearchOverlay } from './components/layout/SearchOverlay'
 import { CartDrawer } from './components/cart/CartDrawer'
 import { Toast } from './components/ui/Toast'
 import { CheckoutSuccess } from './components/ui/CheckoutSuccess'
+import { AddToCartPrompt } from './components/cart/AddToCartPrompt'
 import { useShopStore } from './hooks/use-shop-store'
 import { CatalogPage } from './pages/CatalogPage'
 import { CheckoutPage } from './pages/CheckoutPage'
@@ -94,7 +95,27 @@ function App() {
         )}
 
         {shop.toast && <Toast message={shop.toast} onClose={shop.clearToast} />}
-        {shop.checkoutDone && <CheckoutSuccess onViewOrders={() => shop.navigate('orders')} />}
+
+        {/* Savatga qo'shilgandan keyingi tasdiq — savat ochiq bo'lsa keraksiz */}
+        {shop.cartPrompt && !shop.isCartOpen && shop.page !== 'checkout' && (
+          <AddToCartPrompt
+            prompt={shop.cartPrompt}
+            onConfirm={shop.goToCheckout}
+            onReject={shop.rejectCartPrompt}
+            onClose={shop.dismissCartPrompt}
+          />
+        )}
+
+        {shop.checkoutDone && (
+          <CheckoutSuccess
+            onViewOrders={() => {
+              // Oynani darhol yopamiz: ilgari u zaxira taymer tugaguncha
+              // buyurtmalar sahifasi ustida turib qolardi (F-30).
+              shop.closeCheckoutSuccess()
+              shop.navigate('orders')
+            }}
+          />
+        )}
 
         <div className="page-wrapper">
           {shop.page === 'home' && (

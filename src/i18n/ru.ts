@@ -16,6 +16,8 @@ export const ru: Record<TranslationKey, string> = {
   'common.pcs': 'шт',
   'common.soon': 'скоро!',
   'common.optional': 'необязательно',
+  'common.yes': 'Да',
+  'common.no': 'Нет',
   'common.required': 'обязательно',
 
   // ── Бренд ──
@@ -114,6 +116,9 @@ export const ru: Record<TranslationKey, string> = {
   'cart.size': 'Размер',
   'cart.color': 'Цвет',
   'cart.goToCatalog': 'Смотреть каталог',
+  'cart.promptTitle': 'Оформить заказ?',
+  'cart.promptRemoved': 'Удалено из корзины',
+  'cart.promptUndone': 'Одна штука убрана',
 
   // ── Поиск ──
   'search.placeholder': 'Поиск...',
