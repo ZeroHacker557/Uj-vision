@@ -146,6 +146,7 @@ export const ru: Record<TranslationKey, string> = {
   'checkout.phone': 'Номер телефона',
   'checkout.address': 'Адрес доставки',
   'checkout.noAddresses': 'У вас пока нет сохранённых адресов',
+  'checkout.selectAddress': 'Выберите адрес доставки',
   'checkout.addAddress': '+ Добавить адрес',
   'checkout.addAnotherAddress': '+ Добавить другой адрес',
   'checkout.comment': 'Комментарий',

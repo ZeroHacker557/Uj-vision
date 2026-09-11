@@ -151,6 +151,7 @@ export const uz = {
   'checkout.phone': 'Telefon raqam',
   'checkout.address': 'Yetkazish manzili',
   'checkout.noAddresses': "Sizda hali saqlangan manzillar yo'q",
+  'checkout.selectAddress': 'Yetkazish manzilini tanlang',
   'checkout.addAddress': "+ Yangi manzil qo'shish",
   'checkout.addAnotherAddress': "+ Boshqa manzil qo'shish",
   'checkout.comment': 'Izoh',

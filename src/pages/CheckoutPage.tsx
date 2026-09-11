@@ -60,6 +60,13 @@ export function CheckoutPage({
     if (!orderForm.phone && profile.phone) {
       onUpdateForm('phone', profile.phone)
     }
+    // Saqlangan manzil bitta bo'lsa — o'zi tanlanadi. Aks holda mijoz
+    // "nega buyurtma ketmayapti" deb turaverardi: ro'yxatda manzil
+    // ko'rinardi-yu, lekin u hali tanlanmagan bo'lardi.
+    if (!orderForm.address && profile.addresses?.length === 1) {
+      onUpdateForm('address', profile.addresses[0].address)
+      onUpdateForm('location', profile.addresses[0].location)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile])
 
@@ -273,6 +280,17 @@ export function CheckoutPage({
                 {t('checkout.address')} <span style={{ color: 'var(--danger)' }}>*</span>
               </label>
 
+              {/* Hech narsa tanlanmagan bo'lsa — nima qilish kerakligini aytamiz */}
+              {addresses.length > 0 && !orderForm.address && (
+                <p
+                  className="mb-2 flex items-center gap-1.5 text-xs font-bold"
+                  style={{ color: 'var(--brand)' }}
+                >
+                  <MapPin size={13} />
+                  {t('checkout.selectAddress')}
+                </p>
+              )}
+
               {addresses.length === 0 ? (
                 <div
                   className="rounded-2xl border p-4 text-center"
@@ -300,6 +318,9 @@ export function CheckoutPage({
                         style={{
                           borderColor: isSelected ? 'var(--brand)' : 'var(--line)',
                           background: isSelected ? 'var(--brand-soft)' : 'var(--surface)',
+                          // Ichki soya bilan chegara ikki barobar qalin ko'rinadi,
+                          // lekin karta joyidan siljimaydi.
+                          boxShadow: isSelected ? 'inset 0 0 0 1px var(--brand)' : 'none',
                         }}
                       >
                         <div
@@ -317,7 +338,22 @@ export function CheckoutPage({
                           </p>
                           <p className="truncate text-xs" style={{ color: 'var(--muted)' }}>{addr.address}</p>
                         </div>
-                        {isSelected && <Check size={20} style={{ color: 'var(--brand)' }} />}
+
+                        {/*
+                          Radio doirasi — tanlanmagan holatda ham ko'rinadi.
+                          Ilgari faqat tanlanganida belgi chiqardi, shuning uchun
+                          mijoz bu qatorlarni bosish kerakligini bilmasdi.
+                        */}
+                        <span
+                          className="grid size-6 shrink-0 place-items-center rounded-full border-2 transition"
+                          style={{
+                            borderColor: isSelected ? 'var(--brand)' : 'var(--line)',
+                            background: isSelected ? 'var(--brand)' : 'transparent',
+                            color: 'var(--brand-ink)',
+                          }}
+                        >
+                          {isSelected && <Check size={14} strokeWidth={3} />}
+                        </span>
                       </button>
                     )
                   })}
