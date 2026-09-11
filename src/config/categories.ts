@@ -1,3 +1,6 @@
+import tepa from '../images/cat-tepa.webp'
+import pastgi from '../images/cat-pastgi.webp'
+import oyoq from '../images/cat-oyoq.webp'
 import type { Category } from '../types/domain'
 
 /**
@@ -26,9 +29,8 @@ export type MainLine = {
    * bir xil bo'lsin, aks holda `cover` uni qirqadi: keng karta 2.2:1
    * (1320x600), yarim kartalar 1.27:1 (990x780).
    *
-   * Qo'yish uchun: rasmni `src/images/` ga tashlang, yuqorida
-   * `import tepa from '../images/cat-tepa-kiyimlar.webp'` deb import
-   * qiling va shu maydonga yozing.
+   * Rasmning chap tomonida bo'sh joy qoldiring — sarlavha o'sha yerda
+   * turadi va uning ostiga qorong'i parda tushadi.
    */
   image?: string
 }
@@ -38,16 +40,19 @@ export const MAIN_LINES: MainLine[] = [
     name: 'Tepa kiyimlar',
     icon: 'tepa',
     gradient: 'linear-gradient(135deg, #26325a 0%, #0e1426 100%)',
+    image: tepa,
   },
   {
     name: 'Pastgi kiyimlar',
     icon: 'pastgi',
     gradient: 'linear-gradient(135deg, #3a4a7d 0%, #161d38 100%)',
+    image: pastgi,
   },
   {
     name: 'Oyoq kiyimlar',
     icon: 'oyoq',
     gradient: 'linear-gradient(135deg, #4a5675 0%, #1d2438 100%)',
+    image: oyoq,
   },
 ]
 
