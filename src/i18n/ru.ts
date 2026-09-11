@@ -185,18 +185,11 @@ export const ru: Record<TranslationKey, string> = {
   'orders.tabAll': 'Все',
   'orders.tabNew': 'Новые',
   'orders.tabAccepted': 'Принятые',
-  'orders.tabCancelled': 'Отменённые',
-  'orders.cancel': 'Отменить заказ',
-  'orders.cancelling': 'Отмена...',
-  'orders.cancelConfirm': 'Отменить заказ? Это действие нельзя отменить.',
-  'orders.cancelled': 'Заказ отменён',
+  'orders.tabDelivered': 'Доставленные',
 
   'status.Yangi': 'Новый',
   'status.Qabul qilindi': 'Принят',
-  'status.Yetkazilmoqda': 'Доставляется',
   'status.Yetkazildi': 'Доставлен',
-  'status.Bekor qilingan': 'Отменён',
-  'status.Rad etildi': 'Отклонён',
 
   // ── Избранное ──
   'favorites.title': 'Избранное',

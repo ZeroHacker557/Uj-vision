@@ -192,18 +192,10 @@ export const uz = {
   'orders.tabAll': 'Barchasi',
   'orders.tabNew': 'Yangi',
   'orders.tabAccepted': 'Qabul qilindi',
-  'orders.tabCancelled': 'Bekor qilingan',
-  'orders.cancel': 'Buyurtmani bekor qilish',
-  'orders.cancelling': 'Bekor qilinmoqda...',
-  'orders.cancelConfirm': "Buyurtmani bekor qilasizmi? Bu amalni ortga qaytarib bo'lmaydi.",
-  'orders.cancelled': 'Buyurtma bekor qilindi',
-
+  'orders.tabDelivered': 'Yetkazildi',
   'status.Yangi': 'Yangi',
   'status.Qabul qilindi': 'Qabul qilindi',
-  'status.Yetkazilmoqda': 'Yetkazilmoqda',
   'status.Yetkazildi': 'Yetkazildi',
-  'status.Bekor qilingan': 'Bekor qilingan',
-  'status.Rad etildi': 'Rad etildi',
 
   // ── Sevimlilar ──
   'favorites.title': 'Sevimlilar',

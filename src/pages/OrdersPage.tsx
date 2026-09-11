@@ -1,11 +1,9 @@
 import { useMemo, useState } from 'react'
-import { ChevronDown, ExternalLink, Loader2, ShoppingBag, SlidersHorizontal, X } from 'lucide-react'
+import { ChevronDown, ExternalLink, ShoppingBag, SlidersHorizontal } from 'lucide-react'
 import { formatPrice } from '../data'
 import { getImageUrl, openBotDeepLink } from '../utils/telegram'
 import { formatOrderDate } from '../utils/date'
-import { apiPost, ApiError } from '../lib/api'
 import { BRAND } from '../config/brand'
-import { hapticSuccess, hapticError } from '../utils/telegram'
 import { PageHeader } from '../components/layout/PageHeader'
 import { useT, type TranslationKey } from '../i18n'
 import type { Order, OrderStatus } from '../types/domain'
@@ -15,12 +13,14 @@ const TABS: { id: string; labelKey: TranslationKey }[] = [
   { id: 'all', labelKey: 'orders.tabAll' },
   { id: 'new', labelKey: 'orders.tabNew' },
   { id: 'accepted', labelKey: 'orders.tabAccepted' },
-  { id: 'cancelled', labelKey: 'orders.tabCancelled' },
+  { id: 'delivered', labelKey: 'orders.tabDelivered' },
 ]
 
+/**
+ * Buyurtmada uchta holat bor: "Yangi" (hali ko'rilmagan), keyin admin
+ * panelda qo'yiladigan "Qabul qilindi" va "Yetkazildi".
+ */
 function statusColor(status: string): string {
-  if (status === 'Bekor qilingan' || status === 'Rad etildi') return 'var(--danger)'
-  if (status === 'Yetkazilmoqda') return 'var(--warning)'
   if (status === 'Yetkazildi') return 'var(--success)'
   if (status === 'Qabul qilindi') return 'var(--info)'
   return 'var(--brand)'
@@ -34,47 +34,21 @@ type Props = {
   onSearch: () => void
   onOpenCart: () => void
   onGoToCatalog: () => void
-  onNotify: (message: string) => void
 }
 
-/** Mijoz faqat shu statuslardagi buyurtmani bekor qila oladi. */
-const CANCELLABLE: OrderStatus[] = ['Yangi', 'Qabul qilindi']
-
 export function OrdersPage({
-  orders, authReady, isAuthenticated, cartCount, onSearch, onOpenCart, onGoToCatalog, onNotify,
+  orders, authReady, isAuthenticated, cartCount, onSearch, onOpenCart, onGoToCatalog,
 }: Props) {
   const t = useT()
   const [active, setActive] = useState('all')
   const [newest, setNewest] = useState(true)
   const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [cancellingId, setCancellingId] = useState<string | null>(null)
-
-  const handleCancel = async (orderId: string) => {
-    if (cancellingId) return
-    if (!window.confirm(t('orders.cancelConfirm'))) return
-
-    setCancellingId(orderId)
-    try {
-      await apiPost('/api/order-cancel', { orderId })
-      hapticSuccess()
-      onNotify(t('orders.cancelled'))
-    } catch (error) {
-      hapticError()
-      onNotify(error instanceof ApiError ? error.message : t('reviews.error'))
-    } finally {
-      setCancellingId(null)
-    }
-  }
 
   const filtered = useMemo(() => {
     if (active === 'all') return orders
-    if (active === 'cancelled') {
-      return orders.filter((o) => o.status === 'Bekor qilingan' || o.status === 'Rad etildi')
-    }
     if (active === 'new') return orders.filter((o) => o.status === 'Yangi')
-    return orders.filter(
-      (o) => o.status === 'Qabul qilindi' || o.status === 'Yetkazilmoqda' || o.status === 'Yetkazildi',
-    )
+    if (active === 'delivered') return orders.filter((o) => o.status === 'Yetkazildi')
+    return orders.filter((o) => o.status === 'Qabul qilindi')
   }, [active, orders])
 
   const shown = newest ? filtered : [...filtered].reverse()
@@ -198,25 +172,6 @@ export function OrdersPage({
                     </div>
                   ))}
                 </div>
-              )}
-
-              {CANCELLABLE.includes(order.status) && (
-                <button
-                  onClick={() => handleCancel(order.id)}
-                  disabled={cancellingId === order.id}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-bold transition active:scale-95 disabled:opacity-60"
-                  style={{
-                    background: 'var(--surface-2)',
-                    color: 'var(--danger)',
-                    border: '1px solid var(--line)',
-                  }}
-                >
-                  {cancellingId === order.id ? (
-                    <><Loader2 size={15} className="animate-spin" />{t('orders.cancelling')}</>
-                  ) : (
-                    <><X size={15} />{t('orders.cancel')}</>
-                  )}
-                </button>
               )}
 
               {payInfo?.needsAction && (

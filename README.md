@@ -1,9 +1,14 @@
 # UJ VISION Shop — Telegram Mini App
 
 UJ VISION (kiyimlar do'koni — tepa kiyimlar, pastgi kiyimlar, oyoq
-kiyimlari) uchun Telegram mini app do'koni:
+kiyimlari) uchun Telegram mini app do'koni va web admin panel:
 React + TypeScript + Tailwind CSS frontend, Vercel serverless API va aiogram
 asosidagi Telegram bot.
+
+| Manzil | Kim uchun | Qanday kiriladi |
+|---|---|---|
+| `/` | Mijozlar | Telegram mini app ichida |
+| `/admin` | Do'kon egasi | Brauzerda, login/parol bilan |
 
 ## Brend
 
@@ -31,7 +36,9 @@ bitta blokda hal bo'ladi.
 
 ## Tuzilma
 
-- `src/pages` — ekranlar: bosh sahifa, katalog, profil, buyurtmalar, mahsulot detali.
+- `src/pages` — do'kon ekranlari: bosh sahifa, katalog, profil, buyurtmalar, mahsulot detali.
+- `src/admin` — admin panel: `AdminApp.tsx` (tuzilma va navigatsiya),
+  `pages/` (bo'limlar), `ui.tsx` (umumiy komponentlar), `admin.css`.
 - `src/components/brand` — logotip komponenti.
 - `src/components` — qayta ishlatiluvchi layout, UI, mahsulot va buyurtma komponentlari.
 - `src/config/brand.ts` — brend va aloqa konstantalari.
@@ -40,8 +47,11 @@ bitta blokda hal bo'ladi.
 - `src/hooks` — ilovaning UI holati va biznes harakatlari.
 - `src/i18n` — o'zbekcha (asosiy) va ruscha lug'atlar.
 - `src/types` — markazlashtirilgan TypeScript domen turlari.
-- `api/` — Vercel serverless funksiyalari (auth, orders, reviews, promo).
-- `bot/` — aiogram bot va admin panel.
+- `api/` — Vercel serverless funksiyalari (auth, orders, reviews, promo, admin).
+  `api/admin.ts` — panelning yagona kirish nuqtasi; amallar
+  `api/_lib/admin-actions.ts` da.
+- `bot/` — aiogram bot: do'konni ochadi, buyurtmalar tarixini ko'rsatadi,
+  to'lov cheklarini qabul qiladi. Admin paneli bu yerda emas — u `/admin` da.
 - `public/images/products` — mahsulot rasmlari (bot admin paneli orqali ham yuklanadi).
 
 ## Buyruqlar
@@ -62,5 +72,9 @@ npm run build
 npm run lint
 ```
 
-Mahsulotlar bazadan (Firestore) keladi va bot admin paneli orqali qo'shiladi —
+Mahsulotlar bazadan (Firestore) keladi va `/admin` paneli orqali qo'shiladi —
 `src/data.ts` bo'sh ro'yxat qaytaradi.
+
+Mahalliy ishlab chiqishda `vite dev` `api/*` funksiyalarini ham ishga
+tushiradi (`vite.config.ts` dagi `localApi` plagini). Buning uchun
+`.env.example` dagi qiymatlarni `.env.local` fayliga yozing.

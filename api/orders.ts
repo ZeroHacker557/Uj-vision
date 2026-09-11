@@ -1,6 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { adminAuth, adminDb } from './_lib/firebase-admin.js'
 import { fail, requirePost } from './_lib/http.js'
+import { adminPanelUrl, newOrderMessage } from './_lib/admin-actions.js'
+import { adminChatIds, sendToMany } from './_lib/telegram.js'
 
 const ORDER_NUMBER_START = 1000
 
@@ -141,6 +143,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             discount: Number(data.discount) || 0,
             deliveryFee: Number(data.deliveryFee) || 0,
             duplicate: true,
+            notify: null,
           }
         }
       }
@@ -287,10 +290,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         discount,
         deliveryFee: appliedDelivery,
         duplicate: false,
+        // Xabarnoma uchun — javobga tushmaydi
+        notify: { orderNumber: `#${nextCounter}`, products, customer: order.customer, total },
       }
     })
 
-    return res.status(200).json(result)
+    // Adminga xabar — buyurtma yozilgandan keyin. Ilgari buni bot
+    // Firestore'ni kuzatib turib yuborardi; endi xabar bot ishlamayotgan
+    // paytda ham yetib boradi.
+    //
+    // Javobdan OLDIN kutamiz (fire-and-forget emas): serverless funksiya
+    // javob qaytishi bilan to'xtatilishi mumkin va yuborilmagan so'rov
+    // yo'qoladi. Qo'shimcha yarim soniya — buyurtma yo'qolib qolgandan
+    // ko'ra yaxshi.
+    const { notify, ...payload } = result
+    if (!result.duplicate && notify) {
+      const admins = adminChatIds()
+      if (admins.length) {
+        await sendToMany(admins, newOrderMessage(notify), [
+          { text: '📋 Buyurtmani panelda ochish', url: adminPanelUrl('/orders') },
+        ])
+      }
+    }
+
+    return res.status(200).json(payload)
   } catch (error) {
     const code = error instanceof Error ? error.message : ''
     const messages: Record<string, string> = {

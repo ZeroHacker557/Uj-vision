@@ -37,7 +37,10 @@ _load_env()
 # Token .env dan keladi. Bo'sh bo'lsa bot ishga tushmaydi (bot.py tekshiradi).
 BOT_TOKEN    = os.environ.get("BOT_TOKEN", "")
 BOT_USERNAME = "ujvision_robot"
-ADMIN_IDS    = {7203124812}   # Egalar — panel orqali o'chirib bo'lmaydi
+# Bot xabarlarini kim oladi (chek keldi, yangi buyurtma). Bir nechta
+# bo'lsa vergul bilan. Vercel tomonida ham xuddi shu ro'yxat bo'lishi
+# kerak: ADMIN_TELEGRAM_IDS env o'zgaruvchisi.
+ADMIN_IDS    = {7203124812}
 # BotFather /setdomain da ham aynan shu domen ko'rsatilgan bo'lishi kerak.
 MINI_APP_URL = "https://uj-vision.vercel.app"
 
@@ -61,12 +64,6 @@ FIREBASE_KEY_FILE       = "uj-vision-kiyimdokon-firebase-adminsdk-fbsvc-9623c346
 # Console → Storage → bucket nomi (odatda <project-id>.firebasestorage.app).
 # src/config/firebase.ts dagi storageBucket bilan bir xil bo'lishi shart.
 FIREBASE_STORAGE_BUCKET = "uj-vision-kiyimdokon.firebasestorage.app"
-
-# ── Server ──
-API_HOST     = "0.0.0.0"
-API_PORT     = 8080
-IMAGES_DIR   = "images"
-DB_FILE      = "database.json"
 
 # To'lov sozlamalari — faqat BOSHLANG'ICH qiymat.
 # Bot birinchi ishga tushganda bular Firestore'dagi settings/payment

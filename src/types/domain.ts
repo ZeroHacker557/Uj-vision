@@ -19,6 +19,8 @@ export type Product = {
   sizes?: string[]
   /** Ombordagi qoldiq. undefined — hisob yuritilmaydi (eski mahsulotlar). */
   stock?: number
+  /** Katalogdagi tartib — admin panelda belgilanadi, kichigi oldinda. */
+  sortOrder?: number
 }
 
 export type Category = {
@@ -28,7 +30,14 @@ export type Category = {
   image?: string
 }
 
-export type OrderStatus = 'Yangi' | 'Qabul qilindi' | 'Yetkazilmoqda' | 'Yetkazildi' | 'Bekor qilingan' | 'Rad etildi'
+/**
+ * Buyurtmaning uchta holati.
+ *
+ * "Yangi" — buyurtma tushdi, admin hali ko'rmagan. Qolgan ikkitasini
+ * admin panel qo'yadi: qabul qilingandan keyin "Qabul qilindi", mijozga
+ * yetkazilgach "Yetkazildi".
+ */
+export type OrderStatus = 'Yangi' | 'Qabul qilindi' | 'Yetkazildi'
 
 export type Order = {
   /** Firestore hujjat identifikatori — barcha texnik havolalar shu bo'yicha. */
@@ -52,8 +61,8 @@ export type Order = {
   customer: OrderForm
   userId?: number
   username?: string
-  /** Bot bu buyurtmani adminga yuborganmi (F-21). */
-  notified?: boolean
+  /** To'lov cheki — mijoz botga yuborgan rasm, admin panelda ko'rinadi. */
+  receiptUrl?: string
   /** Eski yozuvlarda formatlangan sana matni bo'lishi mumkin. */
   date?: string
 }
@@ -64,6 +73,18 @@ export type NewOrder = Omit<Order, 'id' | 'orderNumber' | 'createdAt' | 'notifie
 export type PaymentSettings = {
   cardNumber: string
   cardOwner: string
+}
+
+/**
+ * Aloqa ma'lumotlari — admin panelda tahrirlanadi (settings/contact).
+ * Bo'sh maydonlar `src/config/brand.ts` dagi qiymatlar bilan to'ldiriladi.
+ */
+export type ContactSettings = {
+  phone: string
+  email: string
+  telegram: string
+  city: string
+  workHours: string
 }
 
 export type DeliverySettings = {

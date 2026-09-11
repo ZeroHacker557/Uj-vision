@@ -3,7 +3,7 @@ import { getFirestore, collection, onSnapshot, query, where, doc, updateDoc, wri
 import { getStorage } from 'firebase/storage'
 import { firebaseConfig } from '../config/firebase'
 import { parseDate } from '../utils/date'
-import type { Product, Category, Order, PaymentSettings, DeliverySettings, Notification, UserProfile } from '../types/domain'
+import type { Product, Category, ContactSettings, Order, PaymentSettings, DeliverySettings, Notification, UserProfile } from '../types/domain'
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig)
@@ -107,6 +107,36 @@ export async function getDeliverySettings(): Promise<DeliverySettings> {
   } catch (error) {
     console.error("[Firebase] Yetkazish sozlamalarini o'qib bo'lmadi:", error)
     return DELIVERY_FALLBACK
+  }
+}
+
+/**
+ * Aloqa ma'lumotlari — settings/contact hujjatidan.
+ *
+ * Admin panelning "Sozlamalar" bo'limida o'zgartiriladi, shuning uchun
+ * telefon yoki ish vaqtini almashtirish uchun qayta deploy qilish shart
+ * emas. Hujjat bo'lmasa yoki maydon bo'sh bo'lsa, `src/config/brand.ts`
+ * dagi qiymat ishlatiladi.
+ */
+export async function getContactSettings(): Promise<Partial<ContactSettings>> {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'contact'))
+    if (!snap.exists()) return {}
+    const data = snap.data()
+    const pick = (key: string) => {
+      const value = String(data[key] || '').trim()
+      return value || undefined
+    }
+    return {
+      phone: pick('phone'),
+      email: pick('email'),
+      telegram: pick('telegram'),
+      city: pick('city'),
+      workHours: pick('workHours'),
+    }
+  } catch (error) {
+    console.error("[Firebase] Aloqa sozlamalarini o'qib bo'lmadi:", error)
+    return {}
   }
 }
 

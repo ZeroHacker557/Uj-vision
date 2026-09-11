@@ -1,12 +1,17 @@
 # Ishga tushirish qo'llanmasi
 
-3-blokdagi xavfsizlik o'zgarishlaridan keyin loyiha uchta qismdan iborat:
+Loyiha to'rt qismdan iborat:
 
 | Qism | Qayerda ishlaydi | Vazifasi |
 |---|---|---|
-| Mini app | Vercel (statik) | Katalog, savat, buyurtma formasi |
-| `/api/*` | Vercel (serverless) | Telegram imzosini tekshirish, buyurtma yaratish, promokod |
-| Bot | Sizning kompyuteringiz | Admin panel, buyurtma xabarnomalari, to'lov cheklari |
+| Mini app (`/`) | Vercel (statik) | Katalog, savat, buyurtma formasi — Telegram ichida |
+| Admin panel (`/admin`) | Vercel (statik) | Buyurtma, mahsulot, mijoz, statistika — brauzerda, login/parol bilan |
+| `/api/*` | Vercel (serverless) | Telegram imzosi, buyurtma yaratish, admin amallari, xabarnomalar |
+| Bot | Sizning kompyuteringiz | Do'konni ochish, buyurtmalar tarixi, to'lov cheklarini qabul qilish |
+
+> Bot endi admin panel emas. Mahsulot qo'shish, buyurtma holatini
+> o'zgartirish va statistika — hammasi `/admin` sahifasida. Bot faqat
+> mijoz bilan gaplashadi va chek rasmini qabul qiladi.
 
 ---
 
@@ -94,6 +99,30 @@ Firebase Console → ⚙️ **Project Settings** → **Service accounts** →
 **Generate new private key**. Yuklab olingan JSON faylni matn muharririda
 oching va **butun mazmunini** (`{` dan `}` gacha) qiymat sifatida joylang.
 
+### `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`
+Admin panelga kirish. Parol ochiq saqlanmaydi — faqat scrypt hash.
+Yangi parol uchun hash yasash:
+
+```
+node -e "const{randomBytes,scryptSync}=require('crypto');const p=process.argv[1];const s=randomBytes(16);console.log('scrypt:'+s.toString('hex')+':'+scryptSync(p,s,32).toString('hex'))" "PAROLINGIZ"
+```
+
+`ADMIN_SESSION_SECRET` — istalgan uzun tasodifiy satr:
+
+```
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### `ADMIN_TELEGRAM_IDS`
+Yangi buyurtma va to'lov cheki haqidagi xabarni kim oladi. Bir nechta
+bo'lsa vergul bilan: `123456,789012`. Bot tomonidagi nusxasi —
+`bot/config.py` → `ADMIN_IDS`.
+
+### Ixtiyoriy
+`FIREBASE_STORAGE_BUCKET` va `PUBLIC_APP_URL` — ko'rsatilmasa,
+`uj-vision-kiyimdokon.firebasestorage.app` va
+`https://uj-vision.vercel.app` ishlatiladi.
+
 > Loyiha ildizida eski loyihalarning (`ecommercytest`, `musa-onlineshop`,
 > `v7-savdo`) `*-firebase-adminsdk-*.json` fayllari turibdi. Ular
 > `.gitignore` da — git'ga tushmagan, lekin diskda bor: UJ VISION kalitini
@@ -101,6 +130,40 @@ oching va **butun mazmunini** (`{` dan `}` gacha) qiymat sifatida joylang.
 
 Env o'zgaruvchilarni qo'shgandan keyin **qaytadan deploy qiling** —
 Vercel ularni faqat yangi build'ga qo'llaydi.
+
+---
+
+## 2.5. Admin panel
+
+Panel `https://<domeningiz>/admin` manzilida ochiladi — Telegram kerak
+emas, oddiy brauzerda ishlaydi.
+
+Bo'limlar:
+
+| Bo'lim | Nima qiladi |
+|---|---|
+| Boshqaruv paneli | Buyurtma va tushum statistikasi, 14 kunlik grafik, qoldiq tugayotgan mahsulotlar |
+| Buyurtmalar | Yangi → Qabul qilindi → Yetkazildi. Chekni ko'rish, to'lovni tasdiqlash |
+| Mahsulotlar | Qo'shish, tahrirlash, rasm yuklash, tartibni o'zgartirish |
+| Kategoriyalar | Tayyor ikonkalar ro'yxatidan tanlab qo'shish |
+| Mijozlar | Ro'yxat, telefon, manzillar, xaridlar summasi |
+| Xabar yuborish | Barcha yoki faqat xarid qilgan mijozlarga Telegram xabari |
+| Sozlamalar | Karta, yetkazib berish narxi, aloqa ma'lumotlari, promokodlar, parol |
+
+Xavfsizlik:
+
+- Parol serverda scrypt hash bilan solishtiriladi, ochiq ko'rinishda
+  hech qayerda saqlanmaydi.
+- Sessiya — HttpOnly cookie'dagi imzolangan token (12 soat). JavaScript
+  uni o'qiy olmaydi.
+- Ketma-ket 5 marta noto'g'ri parol kiritilsa, hisob 15 daqiqaga
+  bloklanadi.
+- Barcha yozish amallari serverda bajariladi; brauzer Firestore'ga
+  to'g'ridan-to'g'ri yoza olmaydi (`firestore.rules`).
+
+> Parolni panelning o'zidan o'zgartirish mumkin: **Sozlamalar →
+> Xavfsizlik**. Yangi hash Firestore'ga yoziladi va env'dagi qiymatdan
+> ustun turadi.
 
 ---
 
@@ -144,23 +207,33 @@ Qoidalar nima qiladi:
 
 ```
 1. Yangi kodni Vercel'ga deploy qiling (env o'zgaruvchilar bilan)
-2. Mini appni ochib, buyurtma berib ko'ring — ishlashi kerak
-3. Shundan keyin Firestore Rules'ni yangilang
-4. Yana bir buyurtma berib tekshiring
-5. bot/.env dagi tokenni tekshiring va botni qayta ishga tushiring
+2. /admin ga kirib, kategoriya va mahsulot qo'shing
+3. Mini appni ochib, buyurtma berib ko'ring — ishlashi kerak
+4. Shundan keyin Firestore Rules'ni yangilang
+5. Yana bir buyurtma berib tekshiring
+6. bot/.env dagi tokenni tekshiring va botni qayta ishga tushiring
 ```
 
 ---
 
 ## 6. Tekshirish ro'yxati
 
+**Do'kon**
 - [ ] Mini app Telegram'da ochiladi, katalog ko'rinadi
-- [ ] Brauzerda ochilsa "Telegram'da ochish" ekrani chiqadi
-- [ ] Buyurtma berilganda adminga xabar keladi, raqami `#1001` ko'rinishida
+- [ ] Brauzerda `/` ochilsa "Telegram'da ochish" ekrani chiqadi
+- [ ] Buyurtma berilganda adminga Telegram xabari keladi, raqami `#1001` ko'rinishida
 - [ ] "Buyurtmalarim" bo'limida buyurtma ko'rinadi
 - [ ] Promokod qo'llanganda chegirma to'g'ri hisoblanadi
-- [ ] Bot o'chirilgan holda buyurtma berilsa, bot yoqilganda xabar keladi
 - [ ] Karta bilan to'lovda chek yuborish oqimi ishlaydi
+
+**Admin panel**
+- [ ] `/admin` ochiladi, noto'g'ri parol rad etiladi
+- [ ] Mahsulot qo'shiladi va rasm yuklanadi
+- [ ] Kategoriya ikonkasi mini app'da ham xuddi shunday ko'rinadi
+- [ ] Buyurtma "Qabul qilindi" ga o'tkazilganda mijozga xabar boradi
+- [ ] Chek rasmi buyurtma kartasida ko'rinadi
+- [ ] Sozlamalardagi karta raqami mini app'dagi to'lov oynasida ko'rinadi
+- [ ] Telefonda ham yon menyu va jadvallar qulay ochiladi
 
 ### Xatolarni qayerdan ko'rish
 
@@ -172,9 +245,12 @@ Qoidalar nima qiladi:
 
 ## Ma'lum cheklovlar
 
-- **Bot shaxsiy kompyuterda ishlaydi** — kompyuter o'chsa, admin xabarnomalari
-  kechikadi. Buyurtmalar yo'qolmaydi (`notified` bayrog'i tufayli), lekin
-  admin ularni faqat bot yoqilganda ko'radi. Doimiy ishlashi kerak bo'lsa,
-  botni VPS yoki Railway'ga ko'chirish kerak.
-- **Bot lokal ishlaydi** — hozircha VPS'ga ko'chirilmagan. Ko'chirilganda
-  `bot/.env` faylini ham birga olib o'tish kerak (u git'da yo'q).
+- **Bot shaxsiy kompyuterda ishlaydi.** Kompyuter o'chsa, mijoz botga
+  yozolmaydi va chek yuborolmaydi. Lekin yangi buyurtma haqidagi xabarni
+  bot emas, `/api/orders` yuboradi — shuning uchun bot o'chiq bo'lsa ham
+  admin xabardor bo'ladi va panelda hammasini boshqara oladi. Doimiy
+  ishlashi kerak bo'lsa, botni VPS yoki Railway'ga ko'chiring va
+  `bot/.env` faylini birga olib o'ting (u git'da yo'q).
+- **Ommaviy xabar sekin ketadi.** Telegram sekundiga cheklangan sonda
+  xabar qabul qiladi, shuning uchun mijozlar ko'p bo'lsa "Xabar yuborish"
+  bir necha soniya davom etadi — sahifani yopmang.

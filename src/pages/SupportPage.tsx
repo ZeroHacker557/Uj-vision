@@ -14,9 +14,11 @@ import {
   RefreshCw,
   Shirt,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BRAND, DEVELOPER } from '../config/brand'
+import { getContactSettings } from '../lib/firebase'
 import { useT } from '../i18n'
+import type { ContactSettings } from '../types/domain'
 
 type Props = {
   onBack: () => void
@@ -128,13 +130,45 @@ export function SupportPage({ onBack }: Props) {
   const lang = (localStorage.getItem('ujvisionLang') ?? 'uz') as 'uz' | 'ru'
   const faqs = lang === 'ru' ? faqs_ru : faqs_uz
 
+  /*
+   * Aloqa ma'lumotlari admin panelda o'zgartiriladi (settings/contact).
+   * Baza javob bermaguncha yoki maydon bo'sh bo'lsa — brand.ts dagi
+   * qiymat ko'rinadi, shu sabab sahifa hech qachon bo'sh qolmaydi.
+   */
+  const [contact, setContact] = useState<ContactSettings>({
+    phone: BRAND.phone,
+    email: BRAND.email,
+    telegram: BRAND.telegram,
+    city: BRAND.city,
+    workHours: BRAND.workHours,
+  })
+
+  useEffect(() => {
+    let cancelled = false
+    getContactSettings().then((saved) => {
+      if (cancelled) return
+      setContact((current) => ({
+        phone: saved.phone ?? current.phone,
+        email: saved.email ?? current.email,
+        telegram: saved.telegram ?? current.telegram,
+        city: saved.city ?? current.city,
+        workHours: saved.workHours ?? current.workHours,
+      }))
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const telegramHandle = contact.telegram.replace(/^@/, '')
+
   const contacts = [
     {
       id: 'phone',
       icon: Phone,
       label: lang === 'ru' ? 'Телефон' : 'Telefon',
-      value: BRAND.phone,
-      href: BRAND.phoneHref,
+      value: contact.phone,
+      href: `tel:${contact.phone.replace(/[^+\d]/g, '')}`,
       color: 'var(--brand)',
       bg: 'var(--brand-soft)',
     },
@@ -142,8 +176,8 @@ export function SupportPage({ onBack }: Props) {
       id: 'telegram',
       icon: MessageCircle,
       label: 'Telegram',
-      value: BRAND.telegram,
-      href: BRAND.telegramHref,
+      value: contact.telegram,
+      href: `https://t.me/${telegramHandle}`,
       color: '#0ea5e9',
       bg: 'rgba(14,165,233,0.12)',
     },
@@ -151,8 +185,8 @@ export function SupportPage({ onBack }: Props) {
       id: 'email',
       icon: Mail,
       label: 'Email',
-      value: BRAND.email,
-      href: `mailto:${BRAND.email}`,
+      value: contact.email,
+      href: `mailto:${contact.email}`,
       color: 'var(--gold)',
       bg: 'var(--gold-soft)',
     },
@@ -178,14 +212,14 @@ export function SupportPage({ onBack }: Props) {
 
   const features = lang === 'ru'
     ? [
-        { icon: Clock, text: `Приём заказов ${BRAND.workHours}` },
+        { icon: Clock, text: `Приём заказов ${contact.workHours}` },
         { icon: CheckCircle2, text: 'Быстрый ответ' },
-        { icon: MapPin, text: BRAND.city },
+        { icon: MapPin, text: contact.city },
       ]
     : [
-        { icon: Clock, text: `Buyurtmalar ${BRAND.workHours}` },
+        { icon: Clock, text: `Buyurtmalar ${contact.workHours}` },
         { icon: CheckCircle2, text: 'Tez javob' },
-        { icon: MapPin, text: BRAND.city },
+        { icon: MapPin, text: contact.city },
       ]
 
   return (

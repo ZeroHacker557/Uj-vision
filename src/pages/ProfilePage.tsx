@@ -63,7 +63,7 @@ export function ProfilePage({ profile, orders, theme, onToggleTheme, onNavigate,
     { label: t('profile.statOrders'), value: orders.length },
     {
       label: t('profile.statActive'),
-      value: orders.filter((o) => o.status === 'Yangi' || o.status === 'Qabul qilindi' || o.status === 'Yetkazilmoqda').length,
+      value: orders.filter((o) => o.status === 'Yangi' || o.status === 'Qabul qilindi').length,
     },
     { label: t('profile.statDone'), value: orders.filter((o) => o.status === 'Yetkazildi').length },
   ]

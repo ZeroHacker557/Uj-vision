@@ -83,10 +83,23 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // ── Sozlamalar: o'qish mumkin (karta raqami), yozish yo'q ──
+    // ── Sozlamalar ──────────────────────────────────────────
+    // Faqat uchta ochiq hujjat o'qiladi: karta ma'lumoti, yetkazib
+    // berish narxi va aloqa ma'lumotlari.
+    //
+    // Boshqa hujjatlar YOPIQ. Bu muhim: settings/admin_auth ichida
+    // admin panelning parol hash'i turadi — agar butun `settings`
+    // kolleksiyasi ochiq bo'lsa, istalgan foydalanuvchi uni o'qib,
+    // parolni oflayn taxmin qilishga kirishishi mumkin edi.
     match /settings/{docId} {
-      allow read: if signedIn();
+      allow read: if signedIn() && docId in ['payment', 'delivery', 'contact'];
       allow write: if false;
+    }
+
+    // ── Admin panelga kirish urinishlari ────────────────────
+    // Faqat server (Admin SDK) yozadi va o'qiydi.
+    match /admin_logins/{docId} {
+      allow read, write: if false;
     }
 
     // ── Hisoblagichlar: faqat server ────────────────────────
