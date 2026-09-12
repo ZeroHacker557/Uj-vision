@@ -15,14 +15,17 @@ const MAX_SCALE = 4
 /** Ikki marta bosish shu oraliqda sodir bo'lsa — kattalashtirish. */
 const DOUBLE_TAP_MS = 300
 const DOUBLE_TAP_SCALE = 2.5
+/** Keyingi rasmga o'tish uchun barmoq shuncha piksel surilishi kerak. */
+const SWIPE_MIN_PX = 55
 
 type Point = { x: number; y: number }
 
 /**
  * Mahsulot rasmini butun ekranda ochadi.
  *
- * Boshqaruv: ikki barmoq bilan cho'zish, ikki marta bosish (1x ↔ 2.5x),
- * kattalashtirilgan holda surish, Escape yoki fon bosilganda yopish.
+ * Boshqaruv: yonma-yon surish (rasmlar orasida yurish), ikki barmoq
+ * bilan cho'zish, ikki marta bosish (1x ↔ 2.5x), kattalashtirilgan
+ * holda surish, Escape yoki fon bosilganda yopish.
  *
  * Rasm bu yerda `contain` bilan chiziladi — katalogdagi kartada u
  * `cover` bilan qirqilgan, shuning uchun mijoz mahsulotni to'liq
@@ -41,6 +44,12 @@ export function ImageLightbox({ images, index, alt, onIndexChange, onClose }: Pr
   const pointers = useRef(new Map<number, Point>())
   const pinch = useRef<{ dist: number; scale: number; offset: Point } | null>(null)
   const pan = useRef<{ start: Point; offset: Point } | null>(null)
+  /**
+   * Kattalashtirilmagan holatdagi bitta barmoq — rasmlar orasida yurish
+   * uchun. Kattalashtirilganda esa o'sha harakat rasmni surishga ketadi
+   * (pan), shuning uchun ikkalasi alohida saqlanadi.
+   */
+  const swipe = useRef<Point | null>(null)
   const lastTap = useRef(0)
   const moved = useRef(false)
 
@@ -115,6 +124,8 @@ export function ImageLightbox({ images, index, alt, onIndexChange, onClose }: Pr
     } else if (points.length === 1 && scale > 1) {
       pan.current = { start: { x: e.clientX, y: e.clientY }, offset }
       setInteracting(true)
+    } else if (points.length === 1) {
+      swipe.current = { x: e.clientX, y: e.clientY }
     }
   }
 
@@ -137,6 +148,18 @@ export function ImageLightbox({ images, index, alt, onIndexChange, onClose }: Pr
       const dy = e.clientY - pan.current.start.y
       if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved.current = true
       setOffset(clamp({ x: pan.current.offset.x + dx, y: pan.current.offset.y + dy }, scale))
+      return
+    }
+
+    // Surish boshlandi — bu endi "bosish" emas, aks holda barmoq
+    // ko'tarilganda ikki marta bosish hisoblanib qolardi.
+    if (points.length === 1 && swipe.current) {
+      if (
+        Math.abs(e.clientX - swipe.current.x) > 8 ||
+        Math.abs(e.clientY - swipe.current.y) > 8
+      ) {
+        moved.current = true
+      }
     }
   }
 
@@ -147,6 +170,19 @@ export function ImageLightbox({ images, index, alt, onIndexChange, onClose }: Pr
       pan.current = null
       setInteracting(false)
     }
+
+    // Yonma-yon surish — faqat kattalashtirilmagan holatda va agar
+    // harakat tikkasiga emas, ko'ndalangiga bo'lgan bo'lsa.
+    if (swipe.current && multiple && scale === 1 && pointers.current.size === 0) {
+      const dx = e.clientX - swipe.current.x
+      const dy = e.clientY - swipe.current.y
+      swipe.current = null
+      if (Math.abs(dx) >= SWIPE_MIN_PX && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        go(dx < 0 ? 1 : -1)
+        return
+      }
+    }
+    swipe.current = null
 
     // Surilmagan qisqa bosish: ikkinchisi tez kelsa — kattalashtiramiz
     if (!moved.current) {

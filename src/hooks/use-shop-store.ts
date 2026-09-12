@@ -10,6 +10,20 @@ import { hapticError, hapticFeedback, hapticSuccess, initTelegram } from '../uti
 import { applyTheme, getStoredTheme, storeTheme, type ThemeMode } from '../utils/theme'
 import { useT } from '../i18n'
 
+/**
+ * Sahifa almashganda tepaga qaytish.
+ *
+ * `behavior: 'instant'` ataylab: styles.css da `html { scroll-behavior:
+ * smooth }` turibdi, shu sabab oddiy `scrollTo` ekranni sekin surib
+ * borardi. Yangi sahifa allaqachon chizilgan bo'lsa ham, foydalanuvchi
+ * ekran siljib bo'lguncha kutardi — bu "sekin ochyapti" bo'lib
+ * tuyulardi. Sahifa o'tishining o'z animatsiyasi bor (.page-animate),
+ * siljish esa bir zumda bo'lishi kerak.
+ */
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'instant' })
+}
+
 /** Pastki menyudagi asosiy sahifalar — ularga o'tganda tarix tozalanadi. */
 const ROOT_PAGES: AppPage[] = ['home', 'catalog', 'favorites', 'orders', 'profile']
 
@@ -225,7 +239,7 @@ export function useShopStore() {
 
     setCartOpen(false)
     setSearchOpen(false)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    scrollToTop()
   }, [])
 
   const setTheme = useCallback((mode: ThemeMode) => {
@@ -254,7 +268,7 @@ export function useShopStore() {
     })
     setCartOpen(false)
     setSearchOpen(false)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    scrollToTop()
     hapticFeedback('light')
   }, [])
 
@@ -271,7 +285,7 @@ export function useShopStore() {
     setHistory((h) => {
       if (h.length === 0) return h
       setPage(h[h.length - 1])
-      window.scrollTo({ top: 0 })
+      scrollToTop()
       return h.slice(0, -1)
     })
   }, [isSearchOpen, isCartOpen])
@@ -283,7 +297,7 @@ export function useShopStore() {
       setHistory((h) => [...h.slice(-19), current])
       return 'detail'
     })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    scrollToTop()
     hapticFeedback('light')
   }, [])
 
@@ -392,7 +406,7 @@ export function useShopStore() {
       setHistory((h) => [...h.slice(-19), current])
       return 'checkout'
     })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    scrollToTop()
   }, [])
 
   const updateOrderForm = useCallback((field: keyof OrderForm, value: unknown) => {

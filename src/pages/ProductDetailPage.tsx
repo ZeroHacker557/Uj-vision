@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ArrowLeft, Heart, Minus, MessageSquare, Plus, ShoppingCart, Star, Truck, UserRound, ZoomIn } from 'lucide-react'
 import { formatPrice } from '../data'
@@ -31,6 +31,7 @@ export function ProductDetailPage({
   const [activeImage, setActiveImage] = useState(0)
   const [zoomed, setZoomed] = useState(false)
   const [count, setCount] = useState(1)
+  const trackRef = useRef<HTMLDivElement>(null)
 
   const colorsList = product.colors
     || (product.color ? product.color.split(',').map((c) => c.trim()).filter(Boolean) : [])
@@ -92,6 +93,29 @@ export function ProductDetailPage({
     }
   }
 
+  /**
+   * Lenta surilganda faol rasmni aniqlaydi.
+   *
+   * Har bir slayd konteyner kengligiga teng, shuning uchun indeks
+   * oddiy bo'linma bilan chiqadi. Holat faqat indeks o'zgarganda
+   * yangilanadi — aks holda har bir scroll hodisasi render chaqirardi.
+   */
+  const handleTrackScroll = () => {
+    const track = trackRef.current
+    if (!track || !track.clientWidth) return
+    const index = Math.round(track.scrollLeft / track.clientWidth)
+    setActiveImage((current) =>
+      index !== current && index >= 0 && index < images.length ? index : current,
+    )
+  }
+
+  /** Nuqta bosilganda yoki lightbox yopilganda kerakli rasmga suradi. */
+  const goToImage = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
+    const track = trackRef.current
+    if (!track) return
+    track.scrollTo({ left: index * track.clientWidth, behavior })
+  }, [])
+
   const handleAddToCart = () => {
     if (soldOut) return
     for (let i = 0; i < count; i++) onAddToCart(product, selectedSize, selectedColor)
@@ -138,45 +162,58 @@ export function ProductDetailPage({
           * shu qutiga to'liq sig'diradi.
           */}
         <div
-          className="relative mx-auto h-[280px] w-full overflow-hidden rounded-2xl border sm:h-[380px]"
-          style={{
-            // Shaffof PNG'lar uchun fon yuzaning o'zi; ramka chegara bilan beriladi
-            background: 'var(--surface)',
-            borderColor: 'var(--line)',
-            opacity: soldOut ? 0.55 : 1,
-          }}
+          className="detail-gallery"
+          style={{ opacity: soldOut ? 0.55 : 1 }}
         >
-          {images[activeImage] ? (
-            <button
-              className="absolute inset-0 size-full"
-              style={{ cursor: 'zoom-in' }}
-              onClick={() => setZoomed(true)}
-              aria-label={t('product.zoom')}
-            >
-              {/* `cover` — kartadagidek to'liq to'ldiradi. To'liq rasmni
-                  ko'rish uchun bosiladi: lightbox uni `contain` bilan chizadi. */}
-              <img
-                className="size-full object-cover"
-                src={getImageUrl(images[activeImage])}
-                alt={product.name}
-                decoding="async"
-              />
-              <span className="detail-zoom-hint">
-                <ZoomIn size={18} />
-              </span>
-            </button>
+          {images.length > 0 ? (
+            <div className="detail-gallery__track" ref={trackRef} onScroll={handleTrackScroll}>
+              {images.map((image, index) => (
+                <button
+                  key={image + index}
+                  className="detail-gallery__slide"
+                  style={{ cursor: 'zoom-in' }}
+                  onClick={() => setZoomed(true)}
+                  aria-label={t('product.zoom')}
+                >
+                  {/* `cover` — kartadagidek to'liq to'ldiradi. To'liq rasmni
+                      ko'rish uchun bosiladi: lightbox uni `contain` bilan chizadi. */}
+                  <img
+                    src={getImageUrl(image)}
+                    alt={product.name}
+                    decoding="async"
+                    // Birinchi rasm kartadan kelganda keshda bo'ladi —
+                    // uni kechiktirmaymiz, qolganlari esa surilganda kerak.
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={index === 0 ? 'high' : 'auto'}
+                  />
+                </button>
+              ))}
+            </div>
           ) : (
             <span className="absolute inset-0 grid place-items-center">
               <ShoppingCart size={56} style={{ color: 'var(--faint)' }} />
             </span>
           )}
+
+          {images.length > 0 && (
+            <span className="detail-zoom-hint">
+              <ZoomIn size={18} />
+            </span>
+          )}
+
+          {images.length > 1 && (
+            <span className="detail-gallery__counter">
+              {activeImage + 1} / {images.length}
+            </span>
+          )}
         </div>
+
         {images.length > 1 && (
           <div className="mt-3 flex justify-center gap-2">
             {images.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setActiveImage(i)}
+                onClick={() => goToImage(i)}
                 className={'dot ' + (activeImage === i ? 'active' : '')}
                 aria-label={`${i + 1}`}
               />
@@ -414,7 +451,13 @@ export function ProductDetailPage({
           index={activeImage}
           alt={product.name}
           onIndexChange={setActiveImage}
-          onClose={() => setZoomed(false)}
+          onClose={() => {
+            setZoomed(false)
+            // Lightbox'da boshqa rasmga o'tilgan bo'lsa, lenta ham
+            // o'shanga kelsin — aks holda nuqtalar bilan ko'rinayotgan
+            // rasm bir-biriga mos kelmay qoladi.
+            goToImage(activeImage, 'instant')
+          }}
         />
       )}
     </>
